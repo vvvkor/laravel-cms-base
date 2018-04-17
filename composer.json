@@ -49,7 +49,7 @@
             "providers": [
                 "vvvkor\\cms\\CmsServiceProvider"
             ],
-            "alias": {
+            "aliases": {
                 "Cms": "vvvkor\\cms\\Facades\\Cms"
             }
         }
