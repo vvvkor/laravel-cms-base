@@ -6,6 +6,7 @@ namespace vvvkor\cms;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route; 
 
 class CmsServiceProvider extends ServiceProvider
 {
@@ -73,10 +74,13 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function setupRoutes(Router $router)
     {
+		//auto routes
+		/*
         $router->group(['namespace' => 'vvvkor\cms\Http\Controllers'], function($router)
         {
             require __DIR__.'/Http/routes.php';
         });
+		*/
     }
     /**
      * Register any package services.
@@ -111,4 +115,29 @@ class CmsServiceProvider extends ServiceProvider
         });
     }
 	*/
+	
+	public static function routes()
+    {
+// manual routes: include line in routes.php
+// \vvvkor\cms\CmsServiceProvider::routes();
+		
+		Route::group(['middleware' => ['web']], function () {
+			$x = '\\vvvkor\\cms\\Http\\Controllers\\';
+			$res = array(
+				'sections' => $x.'SectionController',
+				'users' => $x.'UserController',
+				);
+			$adm = 'admin/';
+			foreach($res as $k=>$v){ 
+				//Route::get($adm.$k.'/{id}/del', $v.'@confirmDelete');//ask to delete -> @show
+				Route::get($adm.$k.'/{id}/unload/{field}', $v.'@unload')->middleware('auth');//delete uploaded
+				Route::resource($adm.$k, $v)->middleware('auth');
+			}
+			
+			Route::get('/',$x.'PageController@view')->where('sec','.*')->name('start')->middleware('vvvkor\cms\Http\Middleware\CachePages');
+			Route::get('download/{entity}/{id}/{filename?}',$x.'DownloadController@download')->name('download');
+			Route::get('getfile/{entity}/{id}/{width?}/{height?}/{filename?}',$x.'DownloadController@getfile')->name('getfile');
+			Route::get('{url}',$x.'PageController@view')->where('url','.*')->name('front')->middleware('vvvkor\cms\Http\Middleware\CachePages');
+		});
+    }
 }
