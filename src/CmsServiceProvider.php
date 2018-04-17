@@ -3,10 +3,11 @@
 namespace vvvkor\cms;
 
 //use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route; 
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider; //to use $policies
+//use Illuminate\Routing\Router;
+//use Illuminate\Support\Facades\Gate;
+//use Illuminate\Support\Facades\Route; 
+use vvvkor\cms\Cms;
 
 class CmsServiceProvider extends ServiceProvider
 {
@@ -34,8 +35,6 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-		$this->registerPolicies();
-		
         // use this if your package has views
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'cms');
 		$this->publishes([
@@ -49,7 +48,8 @@ class CmsServiceProvider extends ServiceProvider
 		]);
         
         // use this if your package has routes
-        $this->setupRoutes($this->app->router);
+		// BUT this overrides Auth routes, so Facade is used instead
+        //$this->setupRoutes($this->app->router);
 		//OR
 		//$this->loadRoutesFrom(__DIR__.'/Http/routes.php');
         
@@ -63,6 +63,7 @@ class CmsServiceProvider extends ServiceProvider
         //     __DIR__.'/config/config.php', 'cms'
         // );
 		
+		$this->registerPolicies();
 
 		$this->loadMigrationsFrom(__DIR__.'/migrations');
     }
@@ -72,16 +73,17 @@ class CmsServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
+	/*
     public function setupRoutes(Router $router)
     {
 		//auto routes
-		/*
         $router->group(['namespace' => 'vvvkor\cms\Http\Controllers'], function($router)
         {
             require __DIR__.'/Http/routes.php';
         });
-		*/
     }
+	*/
+	
     /**
      * Register any package services.
      *
@@ -89,37 +91,32 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->registerCms();
+        $this->registerCms();
 
 		// register controllers
 		$this->app->make('vvvkor\cms\Http\Controllers\PageController');
 		$this->app->make('vvvkor\cms\Http\Controllers\SectionController');
 		$this->app->make('vvvkor\cms\Http\Controllers\DownloadController');
 		
-	
-        // use this if your package has a config file
-		/*
-         config([
-                 __DIR__.'/config/config.php',
-         ]);
-		 */
+		//merge user config with default config
 		$this->mergeConfigFrom(
 			__DIR__.'/config/config.php', 'cms'
 		);
     }
-	/*
+	
     private function registerCms()
     {
-        $this->app->bind('cms',function($app){
+        $this->app->bind('Cms',function($app){ //OR singleton
             return new Cms($app);
         });
     }
-	*/
 	
+	
+	/*
+	// manual routes: include line in routes.php:
+	// \vvvkor\cms\CmsServiceProvider::routes();
 	public static function routes()
     {
-// manual routes: include line in routes.php
-// \vvvkor\cms\CmsServiceProvider::routes();
 		
 		Route::group(['middleware' => ['web']], function () {
 			$x = '\\vvvkor\\cms\\Http\\Controllers\\';
@@ -140,4 +137,5 @@ class CmsServiceProvider extends ServiceProvider
 			Route::get('{url}',$x.'PageController@view')->where('url','.*')->name('front')->middleware('vvvkor\cms\Http\Middleware\CachePages');
 		});
     }
+	*/
 }

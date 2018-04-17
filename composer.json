@@ -48,7 +48,10 @@
         "laravel": {
             "providers": [
                 "vvvkor\\cms\\CmsServiceProvider"
-            ]
+            ],
+			"alias": {
+				"cms": "vvvkor\\cms\\Facades\Cms::class"
+			}
         }
     },
     "config": {

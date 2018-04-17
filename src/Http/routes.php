@@ -1,5 +1,7 @@
 <?php
 
+// use facade instead
+
 	//namespace vvvkor\cms;
 
 	//use vvvkor\cms\Http\Controllers\PageController;
@@ -7,6 +9,7 @@
 	//use vvvkor\cms\Http\Controllers\SectionController;
 	//use vvvkor\cms\Http\Controllers\DownloadController;
 
+/*
 Route::group(['middleware' => ['web']], function () {
 	$res = array(
 		'sections' => 'SectionController',
@@ -24,3 +27,4 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('getfile/{entity}/{id}/{width?}/{height?}/{filename?}','DownloadController@getfile')->name('getfile');
 	Route::get('{url}','PageController@view')->where('url','.*')->name('front')->middleware('vvvkor\cms\Http\Middleware\CachePages');
 });
+*/
