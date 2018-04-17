@@ -1,7 +1,7 @@
 {
     "name": "vvvkor/cms",
     "type": "library",
-    "description": ":package_description",
+    "description": "Minimalist CMS for Laravel",
     "keywords": [
         "vvvkor",
         "cms"
@@ -10,9 +10,9 @@
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website",
+            "name": "Vadim Korolev",
+            "email": "vadimkor@yandex.ru",
+            "homepage": "https://github.com/vvvkor/",
             "role": "Developer"
         }
     ],
