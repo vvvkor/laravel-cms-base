@@ -50,7 +50,7 @@
                 "vvvkor\\cms\\CmsServiceProvider"
             ],
             "alias": {
-                "Cms": "vvvkor\\cms\\Facades\Cms::class"
+                "Cms": "vvvkor\\cms\\Facades\Cms"
             }
         }
     },
