@@ -12,8 +12,9 @@
 	<aside class="col-md-3">
 		@if (@$rec)
 			@if(1)
-				@inject('record', 'vvvkor\cms\Services\RecordService')
+				@inject('record', '\vvvkor\cms\Services\RecordService')
 				{!! $record->subSections($table, $rec->id, 'cms::table') !!}
+			{{--
 			@else
 				<h3>inject</h3>
 				@inject('record', 'vvvkor\cms\Services\RecordService')
@@ -29,6 +30,7 @@
 					@component('cms::table', ['aside'=>1, 'records'=>$subrecords,'columns'=>$subcols, 'model'=>$model, 'controller'=>$controller, 'table'=>$table])
 					@endcomponent
 				@endif
+			--}}
 			@endif
 		@endif
 	</aside>

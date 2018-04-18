@@ -4,6 +4,7 @@ namespace vvvkor\cms;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use vvvkor\cms\Facades\Cms;
 
 class Section extends Model
 {
@@ -12,7 +13,8 @@ class Section extends Model
 
 	public function scopeAllowed(Builder $query, $hidden=0)
     {
-		if(!auth()->user()){
+		$user = auth()->user();
+		if(!Cms::isAdmin()){
 			$query->where('e',1);
 			$query->where(function($q){
 				$q->where('pub_dt','<',date('Y-m-d H:i:s'))

@@ -19,9 +19,9 @@
 			@if (@$v->has_sub)
 				@component('cms::sectree',[
 					'nav' => $nav->filter(function($w) use ($v){ return ($w->parent_id==$v->id); }),
-					'sec' => @$sec,
 					'root' => $v->id,
 					'controller' => $controller,
+					'model' => $model,
 					])
 				@endcomponent
 			@endif

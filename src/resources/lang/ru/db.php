@@ -28,6 +28,8 @@ return [
 	'users-name' => 'Имя',
 	'users-lang' => 'Язык',
 	'users-email' => 'E-mail',
+	'users-e' => 'Включен',
+	'users-role' => 'Роль',
 	'users-password' => 'Пароль',
 	'users-password_confirmation' => 'Повторите пароль',
 	'users-remember_token' => 'Токен',

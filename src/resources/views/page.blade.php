@@ -24,7 +24,7 @@
     </head>
     <body class="px-5 mx-auto" style="max-width:100em;">
 		<section class="my-3">
-			@component('cms::profile')
+			@component('cms::profile', ['user'=>$user])
 			@endcomponent
 		</section>
 	

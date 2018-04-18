@@ -40,6 +40,7 @@ class CreateSectionsTable extends Migration
         Schema::table('users', function (Blueprint $table) {
 				$table->tinyInteger('e')->default(0);
 				$table->string('lang',2)->default('');
+				$table->string('role',8)->default('');
 		});
     }
 
@@ -50,6 +51,15 @@ class CreateSectionsTable extends Migration
      */
     public function down()
     {
+		Schema::table('users', function (Blueprint $table) {
+			$table->dropColumn('e');
+		});
+		Schema::table('users', function (Blueprint $table) {
+			$table->dropColumn('lang');
+		});
+		Schema::table('users', function (Blueprint $table) {
+			$table->dropColumn('role');
+		});
         Schema::dropIfExists('sections');
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use vvvkor\cms\Repositories\SectionRepository as Repo;
+use vvvkor\cms\Facades\Cms;
 
 class PageController extends Controller
 {
@@ -47,12 +48,13 @@ class PageController extends Controller
 			'sec' => $s,
 			'articles' => $this->repo->articles($s ? $s->id : 0),
 			'files' => $this->repo->files($s ? $s->id : 0),
+			'editable' => Cms::isAdmin(),
 			//'title' => $s->h1,
 			];
 	} 	
-	
+
 	//set lang, redirect?
-	private function prepare($sec){
+	protected function prepare($sec){
 		//user
 		$user = auth()->user();
 		//set lang

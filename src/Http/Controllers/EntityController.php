@@ -23,6 +23,9 @@ abstract class EntityController extends PageController
 	protected $nmf = 'name';
 	protected $lookups = [];
 	protected $fields = [];
+	protected $tableFields  = [];
+	protected $recFields    = [];
+	protected $newRecFields = [];
 	
 	protected $repo;
 	protected $model;
@@ -45,18 +48,29 @@ abstract class EntityController extends PageController
 		
 		//$this->share();
 		$this->middleware(function ($request, $next) {
+            $redir = $this->prepare($this->repo->section(request()->path()));
+			if($redir) return $redir;
+			foreach($this->fields as $k=>$v){
+				$this->fields[$k]['l'] = __('cms::db.'.$this->entity.'-'.$k);
+				if(isset($this->fields[$k]['r']) && is_array($this->fields[$k]['r'])){
+					$this->fields[$k]['r'] = array_map(
+						function($v){ return __('cms::list.'.$v); },
+						$this->fields[$k]['r']
+					);
+				}
+			}
 			$ff = $this->formFields(1);
 			$this->validatorCreate = $this->keyed($ff,'v','n');
 			$ff = $this->formFields(0);
 			$this->validatorUpdate = $this->keyed($ff,'v','n');
-            $this->prepare();
             return $next($request);
         });
 
 	}
 	
 	//set lang
-	private function prepare(){
+	/*
+	private function prepare1(){
 		//user
 		$user = auth()->user();
 		if($user && $user->lang){
@@ -64,18 +78,21 @@ abstract class EntityController extends PageController
 		}
 		$this->share();
 	}
+	*/
 	
 	//actions
 	
-    public function index()
+    public function index(Request $request)
     {
-		//$this->authorize('index', $this->modelClass);
-		$cols = $this->db->getSchemaBuilder()->getColumnListing($this->entity);
-		$d = $this->model->paginate(5);
+		$this->authorize('index', $this->modelClass);
+		if(isset($request->view)) session(['view-'.$this->entity => $request->view]);
+		//$cols = $this->db->getSchemaBuilder()->getColumnListing($this->entity);
+		$d = $this->model->paginate(config('cms.perPageAdmin',20));
 		return view('cms::page-table', [
-			'title'=>__('cms::db.'.$this->entity),
-			'columns'=>$cols,
-			'records'=>$d,
+			'title' => __('cms::db.'.$this->entity),
+			//'columns' => $cols,
+			'columns' => $this->tableFields(),
+			'records' => $d,
 			] + 
 			$this->data()
 			);
@@ -259,18 +276,28 @@ abstract class EntityController extends PageController
 		$r = [];
 		foreach($this->lookups as $t=>$n){
 			$r[$t] = $this->db->table($t)->orderBy($n)->pluck($n,'id');
+			/*
+			$r[$t] = array_map(
+				function($v){ return '!'.__('cms::list.'.$v); },
+				$this->db->table($t)->orderBy($n)->pluck($n,'id')
+				);
+				*/
 		}
 		return ['list'=>$r];
 	}
 	
-	private function keyed(&$a,$val_key,$key='n',$def=null){
+	private function keyed(&$a,$val_key,$key='',$def=null){
+		$r = [];
+		foreach($a as $k=>$v) if(isset($a[$val_key])) $r[$key ? $a[$key] : $k] = $a[$val_key];
+		return $r;
+		/*
 		return array_reduce($a,function($r,$v) use($key, $val_key, $def){
 				if(isset($v[$val_key])) $r[$v[$key]] = $v[$val_key];
 				else if($def!==null) $r[$v[$key]] = $def;
 				return $r;
 			},
 			[]);
-		
+		*/
 	}
 	
 	function fuid($fnm){
@@ -280,14 +307,14 @@ abstract class EntityController extends PageController
 	function upload($request, $rec){
 		$count = 0;
 		$del = [];
-		foreach($this->fields as $f) if(isset($f['t']) && $f['t']=='file'){
-			$file = $request->file($f['n']);
+		foreach($this->fields as $k=>$f) if(isset($f['t']) && $f['t']=='file'){
+			$file = $request->file($k);
 			if($file){
 				$path = $file->store($this->entity);
 				if($path){
-					$fuid = $this->fuid($f['n']);
+					$fuid = $this->fuid($k);
 					if($rec->$fuid) $del[] = $rec->$fuid;
-					$rec->{$f['n']} = $file->getClientOriginalName();
+					$rec->$k = $file->getClientOriginalName();
 					$rec->$fuid = $path;
 					$count++;
 				}
@@ -305,10 +332,20 @@ abstract class EntityController extends PageController
 		}
 	}
 
+	private function tableFields(){
+		$r = [];
+		foreach($this->tableFields as $f){
+			if(isset($this->fields[$f])){
+				$r[$f] = $this->fields[$f];
+			}
+		}
+		return $r;
+	}
+	
 	private function formFields($create=0){
 		$ff = $this->fields;
 		foreach($ff as $k=>$v){
-			$ff[$k]['l'] = __('cms::db.'.$this->entity.'-'.$v['n']);
+			//$ff[$k]['l'] = __('cms::db.'.$this->entity.'-'.$v['n']);
 			if(isset($ff[$k]['w']) && ($ff[$k]['w'] xor !$create)){
 				/*if(@$v['t']=='password')*/ unset($ff[$k]);
 			}
@@ -321,8 +358,8 @@ abstract class EntityController extends PageController
 		$s = [];
 		$skip = [];
 		$ff = $this->formFields($create);
-		foreach($ff as $f) if(isset($f['n']) && !@$f['x']){
-			$k = $f['n'];
+		foreach($ff as $k=>$f) if(/*isset($f['n']) &&*/ !@$f['x']){
+			//$k = $f['n'];
 			$val = (!isset($f['s']) || $f['s']===true)
 				? $request->$k
 				: (($f['s']===false)

@@ -1,8 +1,8 @@
 <div class="form-group row">
-	<label for="{{ $f['n'] }}" class="col-md-2 col-form-label">{{ @$f['l'] ?: $f['n'] }}</label>
+	<label for="{{ $name }}" class="col-md-2 col-form-label">{{ $label }}</label>
 	<div class="col-md-10">
-		<input class="form-control" {{ $seq ? '' : 'autofocus' }} type="{{ @$f['t'] ?: 'text'  }}"
-			name="{{ $f['n'] }}" id="{{ $f['n'] }}" 
-			value="{{ old($f['n'], @$rec->{$f['n']}) }}">
+		<input class="form-control" {{ $order ? '' : 'autofocus' }} type="{{ $type  }}"
+			name="{{ $name }}" id="{{ $name }}" 
+			value="{{ old($name, $value) }}">
 	</div>
 </div>

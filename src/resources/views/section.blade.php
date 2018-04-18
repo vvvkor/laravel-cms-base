@@ -1,6 +1,6 @@
 <section>
 
-@if (@$user)
+@if (@$editable)
 	<a href="{{ action('\vvvkor\cms\Http\Controllers\SectionController@edit', ['id' => $sec->id]) }}" class="float-md-right" title="{{ __('cms::common.edit').' "'.$sec->name.'"' }}">{{ __('cms::common.edit') }}</a>
 @endif
 

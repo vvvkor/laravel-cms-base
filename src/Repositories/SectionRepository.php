@@ -12,7 +12,7 @@ class SectionRepository {
         $this->section = $section;
     }
 
-	public function paginate($perPage = 15, $columns = array('*')){
+	public function paginate($perPage = 10, $columns = array('*')){
 		return $this->section->paginate($perPage, $columns);
 	}
 	
@@ -38,19 +38,22 @@ class SectionRepository {
 		return $fld===null ? $s->first() : $s->value($fld);
 	}
 	
-	public function articles($id, $per_page=10){
+	public function articles($id, $per_page=null){
+		if($per_page===null) $per_page = config('cms.perPage',10);
 		return $id
 			? $this->section->where([['mode','c'],['parent_id',$id]])->allowed()->bySeq()->paginate($per_page)/*->get()*/->keyBy('id')
 			: [];
 	} 	
 	
-	public function files($id, $per_page=100){
+	public function files($id, $per_page=null){
+		if($per_page===null) $per_page = config('cms.perPageFiles',100);
 		return $id
 			? $this->section->where([['mode','f'],['parent_id',$id]])->allowed()->bySeq()->paginate($per_page)/*->get()*/->keyBy('id')
 			: [];
 	} 	
 	
-	public function subsections($id, $per_page=10){
+	public function subsections($id, $per_page=null){
+		if($per_page===null) $per_page = config('cms.perPageSubs',10);
 		return $id
 			? $this->section->where('parent_id',$id)->paginate($per_page)
 			: [];

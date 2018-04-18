@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Route;
 
 class Cms{
 	
+	public function isAdmin(){
+		$user = auth()->user();
+		return ($user && $user->e && $user->role==config('cms.adminRole','admin'));
+	}
+	
 	public function routes(){
 		Route::group([
 			'middleware' => ['web'],
@@ -20,7 +25,10 @@ class Cms{
 			foreach($res as $k=>$v){ 
 				//Route::get($adm.$k.'/{id}/del', $v.'@confirmDelete');//ask to delete -> @show
 				Route::get($adm.$k.'/{id}/unload/{field}', $v.'@unload')->middleware('auth');//delete uploaded
-				Route::resource($adm.$k, $v)->middleware('auth');
+				Route::resource($adm.$k, $v)
+					->middleware('auth')
+					->middleware('vvvkor\cms\Http\Middleware\CheckUserRole')
+					;
 			}
 			
 			Route::get('/',$x.'PageController@view')->where('sec','.*')->name('start')->middleware('vvvkor\cms\Http\Middleware\CachePages');

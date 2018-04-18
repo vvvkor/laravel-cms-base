@@ -1,6 +1,7 @@
 <?php
 
 return [
+
 	//common
 	'login' => 'Log in',
 	'logout' => 'Log out',
@@ -11,6 +12,7 @@ return [
 	'download' => 'Download',
 	'downloads' => 'Downloads',
 	'gallery' => 'Gallery',
+	'forbidden' => 'Forbidden',
 	
 	//admin
 	'tools' => 'Tools',
@@ -18,4 +20,5 @@ return [
 	'edit' => 'Edit',
 	'delete' => 'Delete',
 	'save' => 'Save',
+
 ];

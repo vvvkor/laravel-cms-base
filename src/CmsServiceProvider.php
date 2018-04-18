@@ -106,7 +106,7 @@ class CmsServiceProvider extends ServiceProvider
 	
     private function registerCms()
     {
-        $this->app->bind('Cms',function($app){ //OR singleton
+        $this->app->singleton('Cms',function($app){ //bind OR singleton
             return new Cms($app);
         });
     }
