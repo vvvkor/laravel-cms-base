@@ -24,6 +24,7 @@ abstract class EntityController extends PageController
 	protected $lookups = [];
 	protected $fields = [];
 	protected $tableFields  = [];
+	protected $subTableFields  = [];
 	protected $recFields    = [];
 	protected $newRecFields = [];
 	
@@ -32,7 +33,6 @@ abstract class EntityController extends PageController
 	protected $db;
 
 	protected $modelClass;
-	protected $controllerClass;
 	protected $validatorCreate;
 	protected $validatorUpdate;
 	
@@ -41,9 +41,6 @@ abstract class EntityController extends PageController
 		$this->model = $model;
 		$this->db = $db;
 		$this->modelClass = get_class($model);//for controllers
-		//$c = explode('\\', get_class($this));
-		//$this->controllerClass = array_pop($c);
-		$this->controllerClass = '\\' . get_class($this);//@@ for views
         //$this->authorizeResource($this->model);
 		
 		//$this->share();
@@ -68,17 +65,11 @@ abstract class EntityController extends PageController
 
 	}
 	
-	//set lang
-	/*
-	private function prepare1(){
-		//user
-		$user = auth()->user();
-		if($user && $user->lang){
-			app()->setLocale($user->lang);
-		}
-		$this->share();
+	protected function share(){
+		parent::share();
+		View::share('canCreate', auth()->user()->can('create',$this->modelClass));
 	}
-	*/
+	
 	
 	//actions
 	
@@ -121,11 +112,11 @@ abstract class EntityController extends PageController
 		}
 		catch (\Illuminate\Database\QueryException $e){
 			$this->flash('message-danger', 'fail-create', $e);
-			return redirect(action($this->controllerClass.'@create'));
+			return redirect(route('admin.'.$this->entity.'.create'));
 		}
 		$this->flash('message-success', 'ok-create');
 		$this->upload($request, $rec);
-        return redirect(action($this->controllerClass.'@edit',['id'=>$rec->id]));
+        return redirect(route('admin.'.$this->entity.'.edit',['id'=>$rec->id]));
 	}
 
     public function show($id='')
@@ -162,12 +153,12 @@ abstract class EntityController extends PageController
 		}
 		catch (\Illuminate\Database\QueryException $e){
 			$this->flash('message-danger', 'fail-save', $e);
-			return redirect(action($this->controllerClass.'@edit',$id));
+			return redirect(route('admin.'.$this->entity.'.edit',$id));
 		}
 		//$request->session()->flash('message-success', 'Saved');
 		$this->flash('message-success', 'ok-save');
 		$this->upload($request, $rec);
-        return redirect(action($this->controllerClass.'@edit',['id'=>$rec->id]));
+        return redirect(route('admin.'.$this->entity.'.edit',['id'=>$rec->id]));
     }
 	
     public function destroy($id)
@@ -180,10 +171,10 @@ abstract class EntityController extends PageController
 		//catch (\Exception $e){
 		catch (\Illuminate\Database\QueryException $e){
 			$this->flash('message-danger', 'fail-delete', $e);
-			return redirect(action($this->controllerClass.'@index'));
+			return redirect(route('admin.'.$this->entity.'.index'));
 		}
  		$this->flash('message-success','ok-delete');
-        return redirect(action($this->controllerClass.'@index'));
+        return redirect(route('admin.'.$this->entity.'.index'));
     }
 	
 	//custom actions
@@ -213,10 +204,10 @@ abstract class EntityController extends PageController
 		//catch (\Exception $e){
 		catch (\Illuminate\Database\QueryException $e){
 			$this->flash('message-danger', 'fail-delete', $e);
-			return redirect(action($this->controllerClass.'@index'));
+			return redirect(route('admin.'.$this->entity.'.index'));
 		}
  		$this->flash('message-success','ok-delete');
-        return redirect(action($this->controllerClass.'@index'));
+        return redirect(route('admin.'.$this->entity.'.index'));
    }
    */
    
@@ -235,7 +226,7 @@ abstract class EntityController extends PageController
 		catch (\Illuminate\Database\QueryException $e){
 			$this->flash('message-danger','fail-unload');
 		}
-        return redirect(action($this->controllerClass.'@edit',['id'=>$rec->id]));
+        return redirect(route('admin.'.$this->entity.'.edit',['id'=>$rec->id]));
 	   
    }
 	
@@ -261,10 +252,9 @@ abstract class EntityController extends PageController
 	protected function data(){
 		return [
 			//admin
-			'controller' => $this->controllerClass, // for action links
-			'model' => $this->modelClass, // for can(create)
 			'table' => $this->entity, // subs, attach ...
 			'nmf' => $this->nmf, // hints
+			//'canCreate' => auth()->user()->can('create', $this->modelClass), //shared
 			//common
 			'nav' => $this->repo->nav(),
 			'sec' => $this->repo->section($this->path(1)),

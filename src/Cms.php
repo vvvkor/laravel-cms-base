@@ -24,17 +24,20 @@ class Cms{
 			$adm = 'admin/';
 			foreach($res as $k=>$v){ 
 				//Route::get($adm.$k.'/{id}/del', $v.'@confirmDelete');//ask to delete -> @show
-				Route::get($adm.$k.'/{id}/unload/{field}', $v.'@unload')->middleware('auth');//delete uploaded
-				Route::resource($adm.$k, $v)
-					->middleware('auth')
-					->middleware('vvvkor\cms\Http\Middleware\CheckUserRole')
-					;
+				Route::get($adm.$k.'/{id}/unload/{field}', $v.'@unload') //delete uploaded
+					->name('admin.'.$k.'.unload')
+					->middleware('auth');
+				Route::group(['as' => 'admin.'], function() use ($adm,$k,$v) {
+					Route::resource($adm.$k, $v)
+						->middleware('auth')
+						->middleware('vvvkor\cms\Http\Middleware\CheckUserRole');
+				});
 			}
 			
 			Route::get('/',$x.'PageController@view')->where('sec','.*')->name('start')->middleware('vvvkor\cms\Http\Middleware\CachePages');
 			Route::get('download/{entity}/{id}/{filename?}',$x.'DownloadController@download')->name('download');
 			Route::get('getfile/{entity}/{id}/{width?}/{height?}/{filename?}',$x.'DownloadController@getfile')->name('getfile');
-			Route::get('{url}',$x.'PageController@view')->where('url','.*')->name('front')->middleware('vvvkor\cms\Http\Middleware\CachePages');
+			Route::get('{url}',$x.'PageController@view')->where('url','.*')->name('page')->middleware('vvvkor\cms\Http\Middleware\CachePages');
 		});
     }
 	

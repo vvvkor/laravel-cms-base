@@ -11,20 +11,20 @@
 @endif
 
 <h2 class="my-3">
-<a href="{{ action($controller.'@'.'index') }}">{{ __('cms::db.'.$table) }}</a>
+<a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table) }}</a>
 </h2>
 
 @php( $tree = ($can_switch && $viewMode=='list') )
 
 @if($tree)
-	@can('create',$model)
+	@if(@$canCreate)
 		<div class="my-3">
-			<a class="btn btn-success" href="{{ action($controller.'@'.'create') }}" title="{{ __('cms::add') }}">
+			<a class="btn btn-success" href="{{ route('admin.'.$table.'.create') }}" title="{{ __('cms::add') }}">
 			{{ __('cms::common.add') }}
 			</a>
 		</div>
 	@endcan
-	@component('cms::sectree', ['nav'=>$nav, 'controller'=>$controller, 'root'=>@$rec->id])
+	@component('cms::sectree', ['nav'=>$nav, 'root'=>@$rec->id])
 	@endcomponent
 @else
 <div class="table-responsive my-3">
@@ -33,8 +33,8 @@
 	<tr class="bg">
 		<th>
 			{{ __('cms::common.tools') }}
-			@can('create',$model)
-				<a class="text-success" href="{{ action($controller.'@'.'create') }}" title="{{ __('cms::add') }}">
+			@if(@$canCreate)
+				<a class="text-success" href="{{ route('admin.'.$table.'.create') }}" title="{{ __('cms::add') }}">
 				{{ __('cms::common.add') }}
 				</a>
 			@endcan
@@ -49,16 +49,21 @@
     <tr>
 		<td>
 			@can('update', $v)
-				<a class="text-info" href="{{ action($controller.'@'.'edit', ['id' => $v->id]) }}"
+				<a class="text-info" href="{{ route('admin.'.$table.'.edit', ['id' => $v->id]) }}"
 					title="{{ __('cms::common.edit') }} {{ $v->name }}">
 					{{ __('cms::common.edit') }}</a>
 			@endcan
 			@can('delete', $v)
 				{{-- confirmDelete --}}
-				<a class="text-danger" href="{{ action($controller.'@'.'show', ['id' => $v->id]) }}" 
+				<a class="text-danger" href="{{ route('admin.'.$table.'.show', ['id' => $v->id]) }}" 
 					title="{{ __('cms::common.delete') }} {{ $v->name }}">
 					{{ __('cms::common.delete') }}</a>
 			@endcan
+			@if($table=='sections')
+				@can('view', $v)
+					<a class="text-secondary" href="{{ route('page', ['url'=>$v->url]) }}" title="{{ __('cms::common.view') }}">{{ __('cms::common.view') }}</a>
+				@endcan
+			@endif
 		@foreach ($columns as $k=>$col)
 		<td>{{ $v->$k }}
 		@endforeach

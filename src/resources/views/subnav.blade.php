@@ -24,7 +24,7 @@
 					])
 				@endcomponent
 			@else
-				<a class="dropdown-item {{ $class }} {{ $active }}" href="{{ route('front', $v->url) }}">{{ $nm }}</a>
+				<a class="dropdown-item {{ $class }} {{ $active }}" href="{{ route('page', $v->url) }}">{{ $nm }}</a>
 			@endif
 	@endif
 @endforeach

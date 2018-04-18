@@ -14,7 +14,7 @@
 		@if ($loop->last)
 			{{ $v->name }}
 		@else
-			<a href="{{ route('front', $v->url) }}">{{ $v->name }}</a>
+			<a href="{{ route('page', $v->url) }}">{{ $v->name }}</a>
 		@endif
 	@endforeach
 	</ol>

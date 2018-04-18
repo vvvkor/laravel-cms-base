@@ -27,7 +27,7 @@
 				
 				@if (@$subrecords && $subrecords->count()>0)
 					<h3>ViewComposer as component</h3>
-					@component('cms::table', ['aside'=>1, 'records'=>$subrecords,'columns'=>$subcols, 'model'=>$model, 'controller'=>$controller, 'table'=>$table])
+					@component('cms::table', ['aside'=>1, 'records'=>$subrecords,'columns'=>$subcols, 'table'=>$table])
 					@endcomponent
 				@endif
 			--}}

@@ -7,7 +7,7 @@
 			@component('cms::attach', ['table'=>$table, 'id'=>$rec->id, 'fnm'=>$rec->$name])
 			@endcomponent
 			@if($rec->$name)
-				<a class="text-danger" href="{{ action($controller.'@'.'unload', ['id'=>$rec->id, 'field'=>$name]) }}">Delete file</a>
+				<a class="text-danger" href="{{ route('admin.'.$table.'.unload', ['id'=>$rec->id, 'field'=>$name]) }}">Delete file</a>
 			@endif
 		@endif
 	</div>

@@ -1,11 +1,11 @@
 <section>
 
-@if (@$editable)
-	<a href="{{ action('\vvvkor\cms\Http\Controllers\SectionController@edit', ['id' => $sec->id]) }}" class="float-md-right" title="{{ __('cms::common.edit').' "'.$sec->name.'"' }}">{{ __('cms::common.edit') }}</a>
+@if (@$admin)
+	<a href="{{ route('admin.sections.edit', ['id' => $sec->id]) }}" class="float-md-right" title="{{ __('cms::common.edit').' "'.$sec->name.'"' }}">{{ __('cms::common.edit') }}</a>
 @endif
 
 <{{ $current ? 'h1' : 'h2' }}>
-	<a href="{{ route('front', ['path'=>$sec->url]) }}">{{ $sec->h1 }}</a>
+	<a href="{{ route('page', $sec->url) }}">{{ $sec->h1 }}</a>
 </{{ $current ? 'h1' : 'h2' }}>
 
 @if($sec->mode && $sec->pub_dt)

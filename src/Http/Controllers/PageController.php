@@ -25,6 +25,7 @@ class PageController extends Controller
 	
 	protected function share(){
 		View::share('user', auth()->user());
+		View::share('admin', Cms::isAdmin());
 		View::share('lang', app()->getLocale());
 	}
 	
@@ -48,7 +49,6 @@ class PageController extends Controller
 			'sec' => $s,
 			'articles' => $this->repo->articles($s ? $s->id : 0),
 			'files' => $this->repo->files($s ? $s->id : 0),
-			'editable' => Cms::isAdmin(),
 			//'title' => $s->h1,
 			];
 	} 	
@@ -67,7 +67,7 @@ class PageController extends Controller
 		//redirect?
 		if($sec && $sec->redirect_id){
 			$to = $this->repo->section($sec->redirect_id, 'url', 'id');
-			if($to!==null) return redirect()->route('front', ['sec' => $to]);
+			if($to!==null) return redirect()->route('page', ['sec' => $to]);
 		}
 		$this->share();
 		return null;

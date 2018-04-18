@@ -31,7 +31,6 @@ class RecordService{
 			$cols = ['id'=>['l'=>'id'],'nm'=>['l'=>'name'],'url'=>['l'=>'url']];
 			return view($layout, [
 				'aside' => 1,
-				'controller' => '\vvvkor\cms\Http\Controllers\SectionController',
 				'model' => 'vvvkor\cms\Section',
 				'table' => 'sections',
 				'columns' => $cols,

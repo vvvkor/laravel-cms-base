@@ -1,6 +1,6 @@
 @if ($nav->count()>0)
 <nav class="navbar navbar-dark bg-primary navbar-expand-md">
-	<b><a class="navbar-brand" href="{{ route('front','') }}">{{ config('app.name') }}</a></b>
+	<b><a class="navbar-brand" href="{{ route('page','') }}">{{ config('app.name') }}</a></b>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -30,7 +30,7 @@
 					])
 				@endcomponent
 			@else
-				<a class="nav-link {{ $class }}" href="{{ route('front', $v->url) }}">{{ $nm }}</a>
+				<a class="nav-link {{ $class }}" href="{{ route('page', $v->url) }}">{{ $nm }}</a>
 			@endif
 	@endif
 @endforeach

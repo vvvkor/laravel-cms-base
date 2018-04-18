@@ -25,6 +25,6 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/','PageController@view')->where('sec','.*')->name('start')->middleware('vvvkor\cms\Http\Middleware\CachePages');
 	Route::get('download/{entity}/{id}/{filename?}','DownloadController@download')->name('download');
 	Route::get('getfile/{entity}/{id}/{width?}/{height?}/{filename?}','DownloadController@getfile')->name('getfile');
-	Route::get('{url}','PageController@view')->where('url','.*')->name('front')->middleware('vvvkor\cms\Http\Middleware\CachePages');
+	Route::get('{url}','PageController@view')->where('url','.*')->name('page')->middleware('vvvkor\cms\Http\Middleware\CachePages');
 });
 */
