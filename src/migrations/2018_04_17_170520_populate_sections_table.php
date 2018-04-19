@@ -45,7 +45,13 @@ class PopulateSectionsTable extends Migration
 					'e' => 1,
 					'lang' => 'en',
 					'mode' => '',
-					'body' => 'Hello',
+					'body' => '<ol>
+<li>Using browser go to home page of your project.
+<li>Login with e-mail <kbd>admin@domain.com</kbd> and password <kbd>admin</kbd>.
+<li>Go to home page again.
+<li>In top menu bar there are links Sections and Users.
+<li>Use these links to manage sections and users.
+</ol>',
 					'seq' => 10,
 				]
 			);

@@ -4,7 +4,7 @@
 
 ### Configure database
 
-`.env` or `config/database.php`
+Set parameters in `.env` or `config/database.php` files of your project.
 
 ### Enable authorization
 
@@ -32,7 +32,7 @@ and to `aliases` section
 
 ### Add CMS routes
 
-To add routes to `routes/web.php`
+To add routes to `routes/web.php` run
 
 ```
 $ php artisan make:auth
@@ -46,7 +46,7 @@ Cms::routes();
 
 ### Publish views, translations, config (optional)
 
-Copy to your app if you want to modify files
+Copy stuff to your app if you want to modify it.
 
 ```
 $ php artisan vendor:publish --provider=vvvkor\cms\CmsServiceProvider
