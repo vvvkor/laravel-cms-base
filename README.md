@@ -2,11 +2,11 @@
 
 ## Install
 
-### Configure database
+### Configure database (if you have not alredy)
 
 Set parameters in `.env` or `config/database.php` files of your project.
 
-### Enable authorization
+### Enable authorization (if you have not alredy)
 
 ``` bash
 $ php artisan make:auth
@@ -18,10 +18,9 @@ $ php artisan make:auth
 $ composer require vvvkor/cms
 ``` 
 
-### Add service provider
+### Add service provider (if auto-discovery is disabled)
 
-If auto-discovery is disabled then 
-in `config/app.php` add to `providers` section
+In `config/app.php` add to `providers` section
 ```
 vvvkor\cms\cmsServiceProvider::class,
 ```
