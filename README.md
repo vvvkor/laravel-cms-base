@@ -46,7 +46,8 @@ Cms::routes();
 
 ### Publish views, translations, config (optional)
 
-Copy stuff to your app if you want to modify it.
+Copy stuff to your app if you want to modify it.  
+Views are marked with Bootstrap classes.
 
 ```
 $ php artisan vendor:publish --provider=vvvkor\cms\CmsServiceProvider
@@ -54,7 +55,7 @@ $ php artisan vendor:publish --provider=vvvkor\cms\CmsServiceProvider
 
 ### Use WYSIWYG CKEditor (optional)
 
-You can use CKEditor for visual formatting of texts
+You can use CKEditor for visual formatting of texts.
 ```
 $ composer require unisharp/laravel-ckeditor
 ```
