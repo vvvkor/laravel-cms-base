@@ -26,7 +26,8 @@ class Cms{
 				//Route::get($adm.$k.'/{id}/del', $v.'@confirmDelete');//ask to delete -> @show
 				Route::get($adm.$k.'/{id}/unload/{field}', $v.'@unload') //delete uploaded
 					->name('admin.'.$k.'.unload')
-					->middleware('auth');
+					->middleware('auth')
+					->middleware('vvvkor\cms\Http\Middleware\CheckUserRole');
 				Route::group(['as' => 'admin.'], function() use ($adm,$k,$v) {
 					Route::resource($adm.$k, $v)
 						->middleware('auth')
@@ -38,6 +39,7 @@ class Cms{
 			Route::get('download/{entity}/{id}/{filename?}',$x.'DownloadController@download')->name('download');
 			Route::get('getfile/{entity}/{id}/{width?}/{height?}/{filename?}',$x.'DownloadController@getfile')->name('getfile');
 			Route::get('{url}',$x.'PageController@view')->where('url','.*')->name('page')->middleware('vvvkor\cms\Http\Middleware\CachePages');
+			//Route::get('{url}',function(){ return 'test'; })->where('url','.*')->name('page')->middleware('vvvkor\cms\Http\Middleware\CachePages');
 		});
     }
 	

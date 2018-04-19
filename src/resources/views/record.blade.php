@@ -50,6 +50,11 @@ enctype="multipart/form-data">
 				<input type="submit" value="{{ __('cms::common.add') }}" class="btn btn-success">
 			@endif
 			<a href="{{ route('admin.'.$table.'.index') }}" class="btn btn-link text-secondary">{{ __('cms::common.cancel') }}</a>
+			@if(@$rec)
+				@can('delete', $rec)
+					<a href="{{ route('admin.'.$table.'.show', ['id'=>$rec->id]) }}" class="btn btn-link text-danger">{{ __('cms::common.delete') }}</a>
+				@endcan
+			@endif
 		</label>
     </div>
 

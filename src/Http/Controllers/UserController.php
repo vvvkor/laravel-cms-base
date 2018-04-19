@@ -11,13 +11,14 @@ class UserController extends EntityController
     
 	protected $entity = 'users';
 	
-	protected $tableFields  = ['id','name','email','lang','role'];
+	protected $tabFields  = ['id','name','email','lang','role'];
+	protected $subTabFields  = ['id','name','email'];
 	protected $recFields    = ['name','email','lang','role'];
 	protected $newRecFields = ['name','email','lang','role','password','password_confirmation'];
 	
 	protected $fields = [
-		//v:validate='', :save=true, t:type=text, r:relation|[], 
-		//x:skip_in_query, w=when_to_show (0=create, 1=edit)
+		//v:validate='', :save=true, t:type=text, r:relation|[], u:nullable,
+		//x:skip_in_query
 		'name' => [
 			'v' => 'required',
 			],
@@ -28,12 +29,10 @@ class UserController extends EntityController
 		'password' => [
 			'v' => 'required|min:6|confirmed',
 			't' => 'password',
-			'w' => 0,
 			],
 		'password_confirmation' => [
 			'v' => 'required|min:6',
 			't' => 'password',
-			'w' => 0,
 			'x' => 1,
 			],
 		'lang' => [

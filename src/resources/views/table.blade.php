@@ -1,11 +1,11 @@
-@php ($can_switch = (!@$aside && $table=='sections') )
-@php ($viewMode = session('view-'.$table, 'table') )
+@php ($can_switch = ($table=='sections') )
+@php ($viewMode = session('view-'.$table.(@$aside ? '-sub' : ''), 'table') )
 
 @if($can_switch)
 	<div class="float-md-right">
 		@php( $viewModes = ['table'=>'view-table', 'list'=>'view-list'] )
 		@foreach($viewModes as $k=>$v)
-			<a href="?view={{ $k }}" class="{{ ($k==$viewMode ) ? 'active font-weight-bold' : ''}}">{{ __('cms::list.'.$v) }}</a>
+			<a href="?view={{ $k }}{{ @$aside ? '&sub=1' : ''}}" class="{{ ($k==$viewMode ) ? 'active font-weight-bold' : ''}}">{{ __('cms::list.'.$v) }}</a>
 		@endforeach
 	</div>
 @endif

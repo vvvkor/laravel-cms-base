@@ -41,4 +41,5 @@ class SectionPolicy
     {
         return true;
     }
+	
 }

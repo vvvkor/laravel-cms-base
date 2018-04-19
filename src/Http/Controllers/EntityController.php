@@ -23,8 +23,8 @@ abstract class EntityController extends PageController
 	protected $nmf = 'name';
 	protected $lookups = [];
 	protected $fields = [];
-	protected $tableFields  = [];
-	protected $subTableFields  = [];
+	protected $tabFields  = [];
+	protected $subTabFields  = [];
 	protected $recFields    = [];
 	protected $newRecFields = [];
 	
@@ -33,8 +33,6 @@ abstract class EntityController extends PageController
 	protected $db;
 
 	protected $modelClass;
-	protected $validatorCreate;
-	protected $validatorUpdate;
 	
 	public function __construct(Repo $repo, Model $model, DatabaseManager $db){
 		$this->repo = $repo;
@@ -45,8 +43,10 @@ abstract class EntityController extends PageController
 		
 		//$this->share();
 		$this->middleware(function ($request, $next) {
+			//redirect?
             $redir = $this->prepare($this->repo->section(request()->path()));
 			if($redir) return $redir;
+			//prepare fields
 			foreach($this->fields as $k=>$v){
 				$this->fields[$k]['l'] = __('cms::db.'.$this->entity.'-'.$k);
 				if(isset($this->fields[$k]['r']) && is_array($this->fields[$k]['r'])){
@@ -56,10 +56,11 @@ abstract class EntityController extends PageController
 					);
 				}
 			}
-			$ff = $this->formFields(1);
-			$this->validatorCreate = $this->keyed($ff,'v','n');
-			$ff = $this->formFields(0);
-			$this->validatorUpdate = $this->keyed($ff,'v','n');
+			//session vars
+			if(isset($request->view)){
+				$key = 'view-'.$this->entity.($request->sub ? '-sub' : '');
+				session([$key => $request->view]);
+			}
             return $next($request);
         });
 
@@ -70,19 +71,17 @@ abstract class EntityController extends PageController
 		View::share('canCreate', auth()->user()->can('create',$this->modelClass));
 	}
 	
-	
 	//actions
 	
     public function index(Request $request)
     {
 		$this->authorize('index', $this->modelClass);
-		if(isset($request->view)) session(['view-'.$this->entity => $request->view]);
 		//$cols = $this->db->getSchemaBuilder()->getColumnListing($this->entity);
 		$d = $this->model->paginate(config('cms.perPageAdmin',20));
 		return view('cms::page-table', [
 			'title' => __('cms::db.'.$this->entity),
 			//'columns' => $cols,
-			'columns' => $this->tableFields(),
+			'columns' => $this->tableFields(0),
 			'records' => $d,
 			] + 
 			$this->data()
@@ -104,7 +103,7 @@ abstract class EntityController extends PageController
     public function store(Request $request)
     {
 		$this->authorize('create',$this->modelClass);
-        $request->validate($this->validatorCreate);
+        $request->validate($this->validatedFields(1));
         
 		try{
 			$d = $this->preparePosted($request);
@@ -135,7 +134,8 @@ abstract class EntityController extends PageController
 			'title' => __('cms::db.'.$this->entity).' - '.__('cms::common.edit').
 				' #'.$rec->id, //.' - '.$rec->name
 			'fields' => $this->formFields(),
-			'rec' => $rec, 
+			'rec' => $rec,
+			'aside' => $this->aside($rec),
 			] 
 			+ $this->data() 
 			+ $this->lookupData()
@@ -144,7 +144,7 @@ abstract class EntityController extends PageController
 	
     public function update(Request $request, $id)
     {
-        $request->validate($this->validatorUpdate);
+        $request->validate($this->validatedFields(0));
         $rec = $this->model->findOrFail($id);
 		$this->authorize('update', $rec);
         $s = $this->preparePosted($request, $rec);
@@ -193,24 +193,6 @@ abstract class EntityController extends PageController
 
 	}
 
-	/*
-    public function doDelete($id)
-    {
-		$rec = $this->model->findOrFail($id);
-		$this->authorize('delete', $rec);
-		try{
-			$this->model->destroy($id);
-		}
-		//catch (\Exception $e){
-		catch (\Illuminate\Database\QueryException $e){
-			$this->flash('message-danger', 'fail-delete', $e);
-			return redirect(route('admin.'.$this->entity.'.index'));
-		}
- 		$this->flash('message-success','ok-delete');
-        return redirect(route('admin.'.$this->entity.'.index'));
-   }
-   */
-   
    public function unload($id,$field){
 		$rec = $this->model->findOrFail($id);
 		$this->authorize('update', $rec);
@@ -266,28 +248,12 @@ abstract class EntityController extends PageController
 		$r = [];
 		foreach($this->lookups as $t=>$n){
 			$r[$t] = $this->db->table($t)->orderBy($n)->pluck($n,'id');
-			/*
-			$r[$t] = array_map(
-				function($v){ return '!'.__('cms::list.'.$v); },
-				$this->db->table($t)->orderBy($n)->pluck($n,'id')
-				);
-				*/
 		}
 		return ['list'=>$r];
 	}
 	
-	private function keyed(&$a,$val_key,$key='',$def=null){
-		$r = [];
-		foreach($a as $k=>$v) if(isset($a[$val_key])) $r[$key ? $a[$key] : $k] = $a[$val_key];
-		return $r;
-		/*
-		return array_reduce($a,function($r,$v) use($key, $val_key, $def){
-				if(isset($v[$val_key])) $r[$v[$key]] = $v[$val_key];
-				else if($def!==null) $r[$v[$key]] = $def;
-				return $r;
-			},
-			[]);
-		*/
+	protected function aside($rec){
+		return '';
 	}
 	
 	function fuid($fnm){
@@ -322,9 +288,10 @@ abstract class EntityController extends PageController
 		}
 	}
 
-	private function tableFields(){
+	protected function tableFields($sub=0){
 		$r = [];
-		foreach($this->tableFields as $f){
+		$var = $sub && $this->subTabFields ? 'subTabFields' : 'tabFields';
+		foreach($this->$var as $f){
 			if(isset($this->fields[$f])){
 				$r[$f] = $this->fields[$f];
 			}
@@ -332,24 +299,32 @@ abstract class EntityController extends PageController
 		return $r;
 	}
 	
-	private function formFields($create=0){
-		$ff = $this->fields;
-		foreach($ff as $k=>$v){
-			//$ff[$k]['l'] = __('cms::db.'.$this->entity.'-'.$v['n']);
-			if(isset($ff[$k]['w']) && ($ff[$k]['w'] xor !$create)){
-				/*if(@$v['t']=='password')*/ unset($ff[$k]);
+	protected function getFields($create=0, $key=null){
+		$r = [];
+		$var = $create && $this->newRecFields ? 'newRecFields' : 'recFields';
+		foreach($this->$var as $k){
+			if(isset($this->fields[$k])){
+				if($key===null) $r[$k] = $this->fields[$k];
+				else if(isset($this->fields[$k][$key])) $r[$k] = $this->fields[$k][$key];
 			}
 		}
-		return $ff;
+		return $r;
 	}
-
+	
+	protected function validatedFields($create=0){
+		return $this->getFields($create,'v');
+	}
+	
+	protected function formFields($create=0){
+		return $this->getFields($create);
+	}
+	
 	private function preparePosted(Request $request, &$rec=null){
 		$create = $request->isMethod('post');
 		$s = [];
 		$skip = [];
 		$ff = $this->formFields($create);
-		foreach($ff as $k=>$f) if(/*isset($f['n']) &&*/ !@$f['x']){
-			//$k = $f['n'];
+		foreach($ff as $k=>$f) if(!@$f['x']){
 			$val = (!isset($f['s']) || $f['s']===true)
 				? $request->$k
 				: (($f['s']===false)

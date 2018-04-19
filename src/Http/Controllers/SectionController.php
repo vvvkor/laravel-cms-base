@@ -12,12 +12,14 @@ class SectionController extends EntityController
 	protected $entity = 'sections';
 	protected $lookups = ['sections'=>'name','users'=>'name'];
 	
-	protected $tableFields  = ['id','url','parent_id','redirect_id','name','h1','e','mode','lang','fnm','seq','pub_dt','owner_id'];
+	protected $tabFields  = ['id','url','parent_id','redirect_id','name','h1','e','mode','lang','fnm','seq','pub_dt','owner_id'];
+	protected $subTabFields  = ['id','url','name','e'];
 	protected $recFields    = ['url','parent_id','redirect_id','name','h1','e','mode','lang','fnm','body','seq','pub_dt','owner_id'];
 	protected $newRecFields = [];
 	
 	protected $fields = [
-		//v:validate='', :save=true, t:type=text, r:relation, u:nullable
+		//v:validate='', :save=true, t:type=text, r:relation|[], u:nullable,
+		//x:skip_in_query
 		'url' => [
 			//'v' => 'required|min:3',
 			't' => ''
@@ -70,4 +72,26 @@ class SectionController extends EntityController
 		parent::__construct($repo, $model, $db);
    	}
 	
+	
+	public function aside($rec){
+		$d = $this->repo->subsections($rec->id);
+		if($d->count()==0) return 'No subsections';
+		//$cols = $this->db->getSchemaBuilder()->getColumnListing('sections');
+		
+		/*
+		return view('cms::sectree', [
+			'nav' => $this->repo->nav(),
+			'root' => $rec->id
+			]);
+		*/
+		return view('cms::table', [
+			'aside' => 1,
+			'model' => 'vvvkor\cms\Section',
+			'table' => 'sections',
+			'columns' => $this->tableFields(1),
+			'records' => $d,
+			'nav' => $this->repo->nav(), //for tree
+			]);
+	}
+
 }

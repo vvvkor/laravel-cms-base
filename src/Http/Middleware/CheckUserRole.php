@@ -20,15 +20,13 @@ class CheckUserRole
         $user = auth()->user();
 		if($user && $user->lang) app()->setLocale($user->lang);
         if(!Cms::isAdmin()){
-			//$this->flash('403');
-			//return back()->withInput();
-			//return redirect('/');
-			//return abort(403, 'Not admin');
-			return response(view('cms::errors.403', [
-				'user' => $user,
-				'lang' => app()->getLocale(),
-				'title' => __('cms::common.forbidden'),
-				]), 403);
+			return config('cms.page403','')
+				? response(view('cms::errors.403', [
+					'user' => $user,
+					'lang' => app()->getLocale(),
+					'title' => __('cms::common.forbidden'),
+					]), 403)
+				: abort(403, 'Forbidden');
         }
         return $next($request);
     }

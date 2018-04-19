@@ -8,6 +8,7 @@ class CachePages
 {
 
 	private function getKey($u){
+		if(sizeof(request()->all())>0) return '';//do not cache
 		return 'CachePages-'.md5($u);
 	}
 
@@ -21,7 +22,7 @@ class CachePages
     public function handle($request, Closure $next)
     {
         $key = $this->getKey($request->fullUrl());
-        if(\Cache::has($key)){
+        if($key && \Cache::has($key)){
 			\Log::info('page from cache');
 			return response(\Cache::get($key));
         }
@@ -33,7 +34,7 @@ class CachePages
 		$timeout = config('cms.cachePagesTimeout',0);
 		if($timeout>0){
 			$key = $this->getKey($request->fullUrl());
-			if (!\Cache::has($key)){
+			if ($key && !\Cache::has($key)){
 				\Log::info('save page to cache');
 				\Cache::put($key, $response->getContent(), $timeout);
 			}
