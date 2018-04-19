@@ -41,7 +41,7 @@ class SectionRepository {
 	public function articles($id, $per_page=null){
 		if($per_page===null) $per_page = config('cms.perPage',10);
 		return $id
-			? $this->section->where([['mode','c'],['parent_id',$id]])->allowed()->bySeq()->paginate($per_page)/*->get()*/->keyBy('id')
+			? $this->section->where([['mode','a'],['parent_id',$id]])->allowed()->bySeq()->paginate($per_page)/*->get()*/->keyBy('id')
 			: [];
 	} 	
 	

@@ -44,16 +44,23 @@ abstract class EntityController extends PageController
 		//$this->share();
 		$this->middleware(function ($request, $next) {
 			//redirect?
-            $redir = $this->prepare($this->repo->section(request()->path()));
+            $redir = $this->prepare($this->repo->section(request()->path()), true);
 			if($redir) return $redir;
 			//prepare fields
 			foreach($this->fields as $k=>$v){
 				$this->fields[$k]['l'] = __('cms::db.'.$this->entity.'-'.$k);
 				if(isset($this->fields[$k]['r']) && is_array($this->fields[$k]['r'])){
+					/*
 					$this->fields[$k]['r'] = array_map(
 						function($v){ return __('cms::list.'.$v); },
 						$this->fields[$k]['r']
 					);
+					*/
+					$r = array();
+					foreach($this->fields[$k]['r'] as $q){
+						$r[$q] = __('cms::list.'.$this->entity.'-'.$k.'-'.$q);
+					}
+					$this->fields[$k]['r'] = $r;
 				}
 			}
 			//session vars
@@ -209,8 +216,24 @@ abstract class EntityController extends PageController
 			$this->flash('message-danger','fail-unload');
 		}
         return redirect(route('admin.'.$this->entity.'.edit',['id'=>$rec->id]));
-	   
-   }
+	}
+
+	public function turn($id, $do){
+		$rec = $this->model->findOrFail($id);
+		$this->authorize('update', $rec);
+		try{
+			if($do=='on') $rec->e = 1;
+			else if($do=='off') $rec->e = 0;
+			else return null;
+			$rec->save();
+			$this->flash('message-success','ok-save');
+		}
+		catch (\Illuminate\Database\QueryException $e){
+			$this->flash('message-danger','fail-save');
+		}
+        //return redirect(route('admin.'.$this->entity.'.edit',['id'=>$rec->id]));
+        return back();//redirect(route('admin.'.$this->entity.'.index'));
+	}
 	
 	//helpers
 	

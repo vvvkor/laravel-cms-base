@@ -28,6 +28,11 @@ class Cms{
 					->name('admin.'.$k.'.unload')
 					->middleware('auth')
 					->middleware('vvvkor\cms\Http\Middleware\CheckUserRole');
+				Route::get($adm.$k.'/{id}/{do}', $v.'@turn') //turn on/off
+					->where('do','on|off')
+					->name('admin.'.$k.'.turn')
+					->middleware('auth')
+					->middleware('vvvkor\cms\Http\Middleware\CheckUserRole');
 				Route::group(['as' => 'admin.'], function() use ($adm,$k,$v) {
 					Route::resource($adm.$k, $v)
 						->middleware('auth')

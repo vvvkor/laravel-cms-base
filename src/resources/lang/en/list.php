@@ -2,12 +2,12 @@
 
 return [
 
-	'section-nav' => 'Menu',
-	'section-post' => 'Post / Article',
-	'section-file' => 'File',
+	'sections-mode-' => 'Menu',
+	'sections-mode-a	' => 'Article',
+	'sections-mode-f' => 'File',
 
-	'user-guest' => 'Guest',
-	'user-admin' => 'Administrator',
+	'users-role-' => 'Guest',
+	'users-role-a' => 'Administrator',
 	
 	'view-table' => 'Table',
 	'view-list' => 'List',

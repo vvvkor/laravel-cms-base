@@ -54,16 +54,14 @@ class PageController extends Controller
 	} 	
 
 	//set lang, redirect?
-	protected function prepare($sec){
+	protected function prepare($sec, $preferUserLang=false){
 		//user
 		$user = auth()->user();
 		//set lang
-		if($sec && $sec->lang){
-			app()->setLocale($sec->lang);
-		}
-		else if($user && $user->lang){
-			app()->setLocale($user->lang);
-		}
+		$lang_sources = $preferUserLang ? [$user, $sec] : [$sec, $user];
+		$set_lang = null;
+		foreach($lang_sources as $ls) if(!$set_lang && $ls && $ls->lang) $set_lang = $ls->lang;
+		if($set_lang) app()->setLocale($set_lang);
 		//redirect?
 		if($sec && $sec->redirect_id){
 			$to = $this->repo->section($sec->redirect_id, 'url', 'id');

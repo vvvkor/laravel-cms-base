@@ -20,5 +20,10 @@ return [
 	'edit' => 'Edit',
 	'delete' => 'Delete',
 	'save' => 'Save',
+	
+	'on' => 'On',
+	'off' => 'Off',
+	'turn-on' => 'Enable',
+	'turn-off' => 'Disable',
 
 ];

@@ -40,7 +40,7 @@ class CreateSectionsTable extends Migration
         Schema::table('users', function (Blueprint $table) {
 				$table->tinyInteger('e')->default(0);
 				$table->string('lang',2)->default('');
-				$table->string('role',8)->default('');
+				$table->string('role',1)->default('');
 		});
     }
 

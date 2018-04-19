@@ -66,6 +66,13 @@ class CmsServiceProvider extends ServiceProvider
 		$this->registerPolicies();
 
 		$this->loadMigrationsFrom(__DIR__.'/migrations');
+
+	    if ($this->app->runningInConsole()) {
+			$this->commands([
+				Console\CmsMakeCommand::class,
+			]);
+		}
+
     }
     /**
      * Define the routes for the application.

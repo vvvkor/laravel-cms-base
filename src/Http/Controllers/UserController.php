@@ -11,10 +11,10 @@ class UserController extends EntityController
     
 	protected $entity = 'users';
 	
-	protected $tabFields  = ['id','name','email','lang','role'];
-	protected $subTabFields  = ['id','name','email'];
-	protected $recFields    = ['name','email','lang','role'];
-	protected $newRecFields = ['name','email','lang','role','password','password_confirmation'];
+	protected $tabFields  = ['id','name','email','lang','e','role'];
+	protected $subTabFields  = ['id','name','email','e'];
+	protected $recFields    = ['name','email','lang','e','role'];
+	protected $newRecFields = ['name','email','lang','e','role','password','password_confirmation'];
 	
 	protected $fields = [
 		//v:validate='', :save=true, t:type=text, r:relation|[], u:nullable,
@@ -43,7 +43,7 @@ class UserController extends EntityController
 			],
 		'role' => [
 			't' => 'select',
-			'r' => array(''=>'user-guest','admin'=>'user-admin'),
+			'r' => array('','a'),
 			],
 		];
 	

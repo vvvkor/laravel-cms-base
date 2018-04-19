@@ -2,12 +2,12 @@
 
 return [
 
-	'section-nav' => 'Меню',
-	'section-post' => 'Пост / Статья',
-	'section-file' => 'Файл',
+	'sections-mode-' => 'Меню',
+	'sections-mode-a' => 'Статья',
+	'sections-mode-f' => 'Файл',
 	
-	'user-guest' => 'Гость',
-	'user-admin' => 'Администратор',
+	'users-role-' => 'Гость',
+	'users-role-a' => 'Администратор',
 	
 	'view-table' => 'Таблица',
 	'view-list' => 'Список',

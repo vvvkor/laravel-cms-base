@@ -24,11 +24,11 @@
 			</a>
 		</div>
 	@endcan
-	@component('cms::sectree', ['nav'=>$nav, 'root'=>@$rec->id])
+	@component('cms::sectree', ['nav'=>$nav, 'root'=>@$root])
 	@endcomponent
 @else
 <div class="table-responsive my-3">
-<table class="table -table-striped table-bordered table-hover">
+<table class="table table-bordered -table-striped -table-hover">
 	<thead class="thead-light">
 	<tr class="bg">
 		<th>
@@ -46,9 +46,13 @@
 
 	@foreach ($records as $v)
 	@can('view', $v)
-    <tr>
+    <tr class="{{ $v->e ? '' : 'table-warning' }}">
 		<td>
 			@can('update', $v)
+				<a class="text-primary" href="{{ route('admin.'.$table.'.turn', ['id' => $v->id, 'do' => $v->e ? 'off' : 'on']) }}"
+					title="{{ __('cms::db.'.$table.'-e'.($v->e ? '-turn-off' : '-turn-on')) }}">
+					{{-- __('cms::db.'.$table.'-e'.($v->e ? '' : '-off')) --}}
+					{{ __('cms::db.'.$table.'-e'.($v->e ? '-turn-off' : '-turn-on')) }}</a>
 				<a class="text-info" href="{{ route('admin.'.$table.'.edit', ['id' => $v->id]) }}"
 					title="{{ __('cms::common.edit') }} {{ $v->name }}">
 					{{ __('cms::common.edit') }}</a>
@@ -65,7 +69,16 @@
 				@endcan
 			@endif
 		@foreach ($columns as $k=>$col)
-		<td>{{ $v->$k }}
+			<td>
+			@if($k=='name')
+				@can('update', $v)
+					<a href="{{ route('admin.'.$table.'.edit', ['id' => $v->id]) }}"><b>{{ $v->$k }}</b></a>
+				@else
+					{{ $v->$k }}
+				@endcan
+			@else
+				{{ $v->$k }}
+			@endif
 		@endforeach
 	@else
 		<tr><td colspan="{{ 1+sizeof($columns) }}">{{ $v->id }}

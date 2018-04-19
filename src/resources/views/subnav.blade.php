@@ -9,8 +9,10 @@
 					$v->id == $sec->id || 
 					($v->id == $sec->parent_id && $sec->mode != '')
 					)
-				) ||
-				(!$sec && url($v->url) == URL::current())
+				)
+				/* || (!$sec && url($v->url) == URL::current()) */
+				/* || (!$sec && ($v->url) == request()->path()) */
+				|| (!$sec && $v->url && strpos(request()->path(), $v->url)===0)
 			) ? 'active' : ''
 		)
 		@php ( $class = ($v->e || $active ? '' : 'text-warning ') )

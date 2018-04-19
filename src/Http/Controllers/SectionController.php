@@ -50,7 +50,7 @@ class SectionController extends EntityController
 		'mode' => [
 			//'v' => 'max:1',
 			't' => 'select',
-			'r' => [''=>'section-nav','c'=>'section-post','f'=>'section-file'],
+			'r' => ['','a','f'],
 			],
 		'seq' => [
 			't' => 'number'
@@ -90,7 +90,8 @@ class SectionController extends EntityController
 			'table' => 'sections',
 			'columns' => $this->tableFields(1),
 			'records' => $d,
-			'nav' => $this->repo->nav(), //for tree
+			'nav' => $d, //$this->repo->nav(), //for tree
+			'root' => $rec->id, //for tree
 			]);
 	}
 

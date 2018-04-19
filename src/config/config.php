@@ -3,7 +3,7 @@
 return [
 
 	//access
-	'adminRole' => 'admin', //users.role
+	'adminRole' => 'a', //users.role
 	'page403' => true, // false:abort(403); true:view('cms::errors.403')
 
 	//cache

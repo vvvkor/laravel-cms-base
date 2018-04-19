@@ -2,7 +2,7 @@
 <a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table.'1') }}</a>
 @if(isset($rec))
 	<span class="text-secondary">#{{ $rec->id }}</span>
-	<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}">{{ $rec->name }}</a>
+	<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ $rec->e ? '' : 'bg-warning' }}">{{ $rec->name }}</a>
 @else
 	<a class="text-secondary" href="{{ route('admin.'.$table.'.create') }}">{{ __('cms::common.add') }}</a>
 @endif
