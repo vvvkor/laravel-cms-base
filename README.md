@@ -29,6 +29,12 @@ and to `aliases` section
 'Cms' => vvvkor\cms\Facades\Cms::class,
 ```
 
+### Migrate tables with default data
+
+```
+$ php artisan migrate
+```
+
 ### Add CMS routes
 
 To add routes to `routes/web.php` run
@@ -71,7 +77,7 @@ $ php artisan vendor:publish --tag=ckeditor
 ## Usage
 
 1. Using browser go to home page of your project.
-2. Login with e-mail `admin@domain.com` and password `admin`.
+2. Log in with e-mail `admin@domain.com` and password `admin`.
 3. Go to home page again.
 4. In top menu bar there are links `Sections` and `Users`.
 5. Use these links to manage sections and users.

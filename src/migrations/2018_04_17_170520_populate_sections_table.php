@@ -19,7 +19,7 @@ class PopulateSectionsTable extends Migration
 					'email' => 'admin@domain.com',
 					'password' => Hash::make('admin'),
 					'e' => 1,
-					'role' => 'admin',
+					'role' => 'a',
 					'lang' => 'en',
 					'name' => 'Admin',
 				]
@@ -47,7 +47,7 @@ class PopulateSectionsTable extends Migration
 					'mode' => '',
 					'body' => '<ol>
 <li>Using browser go to home page of your project.
-<li>Login with e-mail <kbd>admin@domain.com</kbd> and password <kbd>admin</kbd>.
+<li>Log in with e-mail <kbd>admin@domain.com</kbd> and password <kbd>admin</kbd>.
 <li>Go to home page again.
 <li>In top menu bar there are links Sections and Users.
 <li>Use these links to manage sections and users.
