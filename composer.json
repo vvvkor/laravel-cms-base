@@ -27,7 +27,7 @@
         "squizlabs/php_codesniffer": "^2.3"
     },
     "autoload": {
-        "psr-4": {
+		"psr-4": {
             "vvvkor\\cms\\": "src/"
         }
     },

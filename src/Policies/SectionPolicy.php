@@ -5,6 +5,7 @@ namespace vvvkor\cms\Policies;
 use App\User;
 use vvvkor\cms\Section;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use vvvkor\cms\Facades\Cms;
 
 class SectionPolicy
 {
@@ -13,33 +14,35 @@ class SectionPolicy
 	/*
 	public function before($user, $ability)
 	{
-		return true;
+		return Cms::isAdmin();
 	}
 	*/
 
     public function index(User $user)
     {
-        return true;
+		return Cms::isAdmin();
     }
 	
     public function view(User $user, Section $section)
     {
-        return true;
+		return $section->e
+			? true
+			: Cms::isReader();
     }
 
     public function create(User $user)
     {
-        return true;
+		return Cms::isAdmin();
     }
 
     public function update(User $user, Section $section)
     {
-        return true;
+		return Cms::isAdmin();
     }
 
     public function delete(User $user, Section $section)
     {
-        return true;
+		return Cms::isAdmin();
     }
 	
 }

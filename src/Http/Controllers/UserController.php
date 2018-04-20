@@ -19,6 +19,8 @@ class UserController extends EntityController
 	protected $fields = [
 		//v:validate='', :save=true, t:type=text, r:relation|[], u:nullable,
 		//x:skip_in_query
+		'id' => [
+			],
 		'name' => [
 			'v' => 'required',
 			],
@@ -43,7 +45,7 @@ class UserController extends EntityController
 			],
 		'role' => [
 			't' => 'select',
-			'r' => array('','a'),
+			'r' => array('','r','a'),
 			],
 		];
 	

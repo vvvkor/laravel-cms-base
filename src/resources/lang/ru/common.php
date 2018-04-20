@@ -13,6 +13,7 @@ return [
 	'downloads' => 'Загрузки',
 	'gallery' => 'Галерея',
 	'forbidden' => 'Нет доступа',
+	'read-more' => 'Читать дальше',
 	
 	//admin
 	'tools' => 'Инструменты',

@@ -20,6 +20,8 @@ class SectionController extends EntityController
 	protected $fields = [
 		//v:validate='', :save=true, t:type=text, r:relation|[], u:nullable,
 		//x:skip_in_query
+		'id' => [
+			],
 		'url' => [
 			//'v' => 'required|min:3',
 			't' => ''
@@ -74,25 +76,24 @@ class SectionController extends EntityController
 	
 	
 	public function aside($rec){
-		$d = $this->repo->subsections($rec->id);
-		if($d->count()==0) return 'No subsections';
-		//$cols = $this->db->getSchemaBuilder()->getColumnListing('sections');
-		
-		/*
-		return view('cms::sectree', [
-			'nav' => $this->repo->nav(),
-			'root' => $rec->id
-			]);
-		*/
-		return view('cms::table', [
-			'aside' => 1,
-			'model' => 'vvvkor\cms\Section',
-			'table' => 'sections',
-			'columns' => $this->tableFields(1),
-			'records' => $d,
-			'nav' => $d, //$this->repo->nav(), //for tree
-			'root' => $rec->id, //for tree
-			]);
+		$modes = ['','a','f'];
+		$r = '';
+		foreach($modes as $mode){
+			$d = $this->repo->subsections($rec->id, $mode);
+			if($d && $d->count()){
+				$r .= view('cms::table', [
+					'aside' => 1,
+					'tag' => $mode,
+					'title' => __('cms::list.sections-mode-'.$mode),
+					'model' => 'vvvkor\cms\Section',
+					'table' => 'sections',
+					'columns' => $this->tableFields(1),
+					'records' => $d,
+					'root' => $rec->id, //for tree
+					]);
+			}
+		}
+		return $r;
 	}
 
 }

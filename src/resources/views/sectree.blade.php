@@ -23,7 +23,7 @@
 				<span class="text-secondary">({{ __('cms::list.sections-mode-'.$v->mode) }})</span>
 			@endif
 			
-			@if (@$v->has_sub)
+			@if(@$v->has_sub)
 				@component('cms::sectree',[
 					'nav' => $nav->filter(function($w) use ($v){ return ($w->parent_id==$v->id); }),
 					'root' => $v->id,

@@ -7,6 +7,7 @@ return [
 	'sections-mode-f' => 'Файл',
 	
 	'users-role-' => 'Гость',
+	'users-role-r' => 'Читатель',
 	'users-role-a' => 'Администратор',
 	
 	'view-table' => 'Таблица',

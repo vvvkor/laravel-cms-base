@@ -2,6 +2,8 @@
 
 return [
 
+	'auth-locked' => 'User account locked',
+	
 	'fail-save' => 'Failed saving',
 	'fail-create' => 'Failed creating',
 	'fail-delete' => 'Failed deleting',

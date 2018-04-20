@@ -2,13 +2,53 @@
 
 namespace vvvkor\cms;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cache;
+use vvvkor\cms\Repositories\SectionRepository as Repo;
 
 class Cms{
+	
+	protected $repo;
+	
+	public function __construct(Repo $repo){
+		$this->repo = $repo;
+	}
 	
 	public function isAdmin(){
 		$user = auth()->user();
 		return ($user && $user->e && $user->role==config('cms.adminRole','admin'));
+	}
+	
+	public function isReader(){
+		$user = auth()->user();
+		return ($user && $user->e && $user->role);
+	}
+	
+	public function nav(){
+		return $this->repo->nav();
+	}
+	
+	public function section($path, $fld=null, $by='url'){
+		return $this->repo->section($path, $fld, $by);
+	}
+	
+	public function recName($t, $id, $fld='name'){
+		//return $this->repo->section($id, 'name', 'id');
+		return $id
+			?
+			//very naive caching
+			Cache::remember('rec-'.$t.'-'.$id.'-'.$fld, 1, function() use ($t, $id, $fld){
+				return DB::table($t)->where('id',$id)->value($fld);
+			})
+			: null;
+			
+	}
+	
+	public function excerpt($s/*,$u=null*/){
+		return preg_replace('/([\.\?!]).*$/s','$1',strip_tags($s) /*, -1, $count*/);
+		//if($count && $u!==null) $r .= '...';
+		//return $r;
 	}
 	
 	public function routes(){

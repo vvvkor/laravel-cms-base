@@ -38,24 +38,41 @@ class SectionRepository {
 		return $fld===null ? $s->first() : $s->value($fld);
 	}
 	
+	public function sectionExists($path, $by='url'){
+		$s = $this->section->where([[$by,$path]]);
+		return $s ? $s->value('id') : false;
+	}
+	
 	public function articles($id, $per_page=null){
 		if($per_page===null) $per_page = config('cms.perPage',10);
 		return $id
-			? $this->section->where([['mode','a'],['parent_id',$id]])->allowed()->bySeq()->paginate($per_page)/*->get()*/->keyBy('id')
+			? $this->section
+				->where([['mode','a'],['parent_id',$id]])
+				->allowed()
+				->bySeq()
+				->paginate($per_page)
+				//->get()
+				//->keyBy('id')
 			: [];
 	} 	
 	
 	public function files($id, $per_page=null){
 		if($per_page===null) $per_page = config('cms.perPageFiles',100);
 		return $id
-			? $this->section->where([['mode','f'],['parent_id',$id]])->allowed()->bySeq()->paginate($per_page)/*->get()*/->keyBy('id')
+			? $this->section
+				->where([['mode','f'],['parent_id',$id]])
+				->allowed()
+				->bySeq()
+				->paginate($per_page)
+				//->get()
+				//->keyBy('id')
 			: [];
 	} 	
 	
-	public function subsections($id, $per_page=null){
+	public function subsections($id, $mode='', $per_page=null){
 		if($per_page===null) $per_page = config('cms.perPageSubs',10);
 		return $id
-			? $this->section->where('parent_id',$id)->paginate($per_page)
+			? $this->section->where([['parent_id',$id],['mode',$mode]])->paginate($per_page)
 			: [];
 	}
 	

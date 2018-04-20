@@ -65,7 +65,7 @@ abstract class EntityController extends PageController
 			}
 			//session vars
 			if(isset($request->view)){
-				$key = 'view-'.$this->entity.($request->sub ? '-sub' : '');
+				$key = 'view-'.$this->entity.($request->tag ? '-'.$request->tag : '');
 				session([$key => $request->view]);
 			}
             return $next($request);
@@ -142,6 +142,7 @@ abstract class EntityController extends PageController
 				' #'.$rec->id, //.' - '.$rec->name
 			'fields' => $this->formFields(),
 			'rec' => $rec,
+			'sec' => $rec,
 			'aside' => $this->aside($rec),
 			] 
 			+ $this->data() 
@@ -261,7 +262,7 @@ abstract class EntityController extends PageController
 			'nmf' => $this->nmf, // hints
 			//'canCreate' => auth()->user()->can('create', $this->modelClass), //shared
 			//common
-			'nav' => $this->repo->nav(),
+			//'nav' => $this->repo->nav(),
 			'sec' => $this->repo->section($this->path(1)),
 			'articles' => [],
 			];

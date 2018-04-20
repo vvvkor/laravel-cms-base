@@ -1,5 +1,21 @@
 # cms
 
+## Features
+
+* Lightweight
+* Minimal footprint (just one table in database)
+* Pages hierarchy
+* Public and protected pages
+* Publication can be planned for future
+* Many articles per page
+* Many uploads per article
+* Multilingual (english and russian icluded)
+* Uses standard Laravel authentication
+* Uses bootstrap classes
+* Ready to use WYSIWYG CKEditor
+* Cache pages
+* Image thumbnails (also cached)
+
 ## Install
 
 ### Configure database (if you have not alredy)

@@ -3,10 +3,10 @@
 
 @while($cur)
 	@php ( array_unshift($bread,$cur) )
-	@php ($cur = $cur->parent_id ? $nav[$cur->parent_id] : null)
+	@php ($cur = $cur->parent_id ? (@$nav[$cur->parent_id] ?: cms()->section($cur->parent_id,null,'id')) : null)
 @endwhile
 
-@if ($bread)
+@if ($bread && (!@$table || ($table=='sections' && $sec->parent_id)))
 	<nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
 	@foreach($bread as $v)
@@ -14,7 +14,11 @@
 		@if ($loop->last)
 			{{ $v->name }}
 		@else
-			<a href="{{ route('page', $v->url) }}">{{ $v->name }}</a>
+			@if(@$table)
+				<a href="{{ route('admin.'.$table.'.edit', @$v->id) }}">{{ $v->name }}</a>
+			@else
+				<a href="{{ route('page', ['url'=>@$v->url]) }}">{{ $v->name }}</a>
+			@endif
 		@endif
 	@endforeach
 	</ol>

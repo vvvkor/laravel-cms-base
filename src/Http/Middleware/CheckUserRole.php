@@ -21,11 +21,7 @@ class CheckUserRole
 		if($user && $user->lang) app()->setLocale($user->lang);
         if(!Cms::isAdmin()){
 			return config('cms.page403','')
-				? response(view('cms::errors.403', [
-					'user' => $user,
-					'lang' => app()->getLocale(),
-					'title' => __('cms::common.forbidden'),
-					]), 403)
+				? response(view('cms::errors.403', []), 403)
 				: abort(403, 'Forbidden');
         }
         return $next($request);

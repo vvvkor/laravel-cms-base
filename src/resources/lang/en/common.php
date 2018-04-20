@@ -13,6 +13,7 @@ return [
 	'downloads' => 'Downloads',
 	'gallery' => 'Gallery',
 	'forbidden' => 'Forbidden',
+	'read-more' => 'Read more',
 	
 	//admin
 	'tools' => 'Tools',

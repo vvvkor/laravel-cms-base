@@ -4,7 +4,7 @@ return [
 
 	//access
 	'adminRole' => 'a', //users.role
-	'page403' => true, // false:abort(403); true:view('cms::errors.403')
+	'page403' => false, // false:abort(403); true:view('cms::errors.403')
 
 	//cache
 	'cachePagesTimeout' => 0, //minutes 1440

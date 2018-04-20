@@ -14,8 +14,10 @@ class Section extends Model
 	public function scopeAllowed(Builder $query, $hidden=0)
     {
 		$user = auth()->user();
-		if(!Cms::isAdmin()){
+		if(!Cms::isReader()){
 			$query->where('e',1);
+		}
+		if(!Cms::isAdmin()){
 			$query->where(function($q){
 				$q->where('pub_dt','<',date('Y-m-d H:i:s'))
 					->orWhereNull('pub_dt');

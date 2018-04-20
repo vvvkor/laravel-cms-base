@@ -3,6 +3,9 @@
 @if(isset($rec))
 	<span class="text-secondary">#{{ $rec->id }}</span>
 	<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ $rec->e ? '' : 'bg-warning' }}">{{ $rec->name }}</a>
+	@if($table=='sections')
+		<a href="{{ route('page', ['url'=>$rec->url]) }}" class="text-secondary" title="{{ __('cms::common.view') }}">&rarr;</a>
+	@endif
 @else
 	<a class="text-secondary" href="{{ route('admin.'.$table.'.create') }}">{{ __('cms::common.add') }}</a>
 @endif

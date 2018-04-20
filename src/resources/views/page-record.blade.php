@@ -1,7 +1,6 @@
 @extends('cms::page')
 
-@section('bread','')
-
+{{-- @section('bread','') --}}
 
 @section('main')
 <div class="row">

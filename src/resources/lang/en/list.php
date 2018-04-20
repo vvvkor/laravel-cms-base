@@ -7,6 +7,7 @@ return [
 	'sections-mode-f' => 'File',
 
 	'users-role-' => 'Guest',
+	'users-role-r' => 'Reader',
 	'users-role-a' => 'Administrator',
 	
 	'view-table' => 'Table',

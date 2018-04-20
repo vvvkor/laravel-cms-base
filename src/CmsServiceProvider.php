@@ -7,6 +7,8 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 //use Illuminate\Routing\Router;
 //use Illuminate\Support\Facades\Gate;
 //use Illuminate\Support\Facades\Route; 
+use vvvkor\cms\Repositories\SectionRepository as Repo;
+use vvvkor\cms\Section;
 use vvvkor\cms\Cms;
 
 class CmsServiceProvider extends ServiceProvider
@@ -114,8 +116,9 @@ class CmsServiceProvider extends ServiceProvider
     private function registerCms()
     {
         $this->app->singleton('Cms',function($app){ //bind OR singleton
-            return new Cms($app);
+            return new Cms(new Repo(new Section()));
         });
+		require_once 'helpers.php';
     }
 	
 	

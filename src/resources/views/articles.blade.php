@@ -1,4 +1,6 @@
 @foreach ($articles as $v)
-	@component('cms::section',['sec'=>$v,'current'=>0])
+	@component('cms::article',['sec'=>$v])
 	@endcomponent
 @endforeach
+
+{{ $articles->links() }}

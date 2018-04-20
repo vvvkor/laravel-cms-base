@@ -1,17 +1,21 @@
 @php ($can_switch = ($table=='sections') )
-@php ($viewMode = session('view-'.$table.(@$aside ? '-sub' : ''), 'table') )
+@php ($viewMode = session('view-'.$table.(@$tag ? '-'.$tag : ''), 'table') )
 
 @if($can_switch)
 	<div class="float-md-right">
 		@php( $viewModes = ['table'=>'view-table', 'list'=>'view-list'] )
 		@foreach($viewModes as $k=>$v)
-			<a href="?view={{ $k }}{{ @$aside ? '&sub=1' : ''}}" class="{{ ($k==$viewMode ) ? 'active font-weight-bold' : ''}}">{{ __('cms::list.'.$v) }}</a>
+			<a href="?view={{ $k }}{{ @$tag ? '&tag='.$tag : ''}}" class="{{ ($k==$viewMode ) ? 'active font-weight-bold' : ''}}">{{ __('cms::list.'.$v) }}</a>
 		@endforeach
 	</div>
 @endif
 
 <h2 class="my-3">
-<a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table) }}</a>
+@if(isset($title))
+	{{ $title }}
+@else
+	<a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table) }}</a>
+@endif
 </h2>
 
 @php( $tree = ($can_switch && $viewMode=='list') )
@@ -19,12 +23,12 @@
 @if($tree)
 	@if(@$canCreate)
 		<div class="my-3">
-			<a class="btn btn-success" href="{{ route('admin.'.$table.'.create') }}" title="{{ __('cms::add') }}">
+			<a class="{{ @$aside ? 'text-success' : 'btn btn-success' }}" href="{{ route('admin.'.$table.'.create') }}" title="{{ __('cms::add') }}">
 			{{ __('cms::common.add') }}
 			</a>
 		</div>
 	@endcan
-	@component('cms::sectree', ['nav'=>$nav, 'root'=>@$root])
+	@component('cms::sectree', ['nav'=>@$aside ? $records : cms()->nav(), 'root'=>@$root])
 	@endcomponent
 @else
 <div class="table-responsive my-3">
@@ -77,7 +81,15 @@
 					{{ $v->$k }}
 				@endcan
 			@else
-				{{ $v->$k }}
+				@if(isset($col['r']))
+					@if(is_array($col['r']))
+						{{ __('cms::list.'.$table.'-'.$k.'-'.$v->$k) }}
+					@else
+						<a href="{{ route('admin.'.$col['r'].'.edit', ['id'=>$v->$k]) }}">{{ $v->$k ? cms()->recName($col['r'], $v->$k) : '-' }}</a>
+					@endif
+				@else
+					{{ $v->$k }}
+				@endif
 			@endif
 		@endforeach
 	@else

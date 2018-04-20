@@ -20,7 +20,7 @@
 	<a href="{{ route('admin.'.$table.'.edit', $rec->id) }}" class="btn btn-primary">{{ __('cms::common.edit') }} "{{ $rec->$nmf }}"</a>
 	<a href="{{ route('admin.'.$table.'.index') }}" class="btn btn-secondary">{{ __('cms::common.cancel') }}</a>
 	@if ($table=='sections')
-	<a href="{{ route('page', $rec->url) }}" class="btn btn-link">{{ __('cms::common.view') }}</a>
+	<a href="{{ route('page', ['url'=>$rec->url]) }}" class="btn btn-link">{{ __('cms::common.view') }}</a>
 	@endif
 </form>
 

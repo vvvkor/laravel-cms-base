@@ -1,3 +1,5 @@
+@php( $title = __('cms::common.forbidden') )
+
 @extends('cms::page')
 
 @section('bread','')

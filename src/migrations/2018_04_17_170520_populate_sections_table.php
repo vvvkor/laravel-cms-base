@@ -71,6 +71,18 @@ class PopulateSectionsTable extends Migration
 				],
 				[
 					'parent_id' => null,
+					'name' => 'Services',
+					'h1' => 'Services',
+					'url' => 'services',
+					'e' => 1,
+					'lang' => 'en',
+					'mode' => '',
+					'body' => 'Info...',
+					'seq' => 30,
+				],
+				/*
+				[
+					'parent_id' => null,
 					'name' => 'Sections',
 					'h1' => 'Sections',
 					'url' => 'admin/sections',
@@ -91,6 +103,7 @@ class PopulateSectionsTable extends Migration
 					'body' => '',
 					'seq' => 110,
 				],
+				*/
 				]
 			);
     }

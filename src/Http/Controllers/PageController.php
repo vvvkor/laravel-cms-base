@@ -24,28 +24,36 @@ class PageController extends Controller
 	}
 	
 	protected function share(){
-		View::share('user', auth()->user());
-		View::share('admin', Cms::isAdmin());
 		View::share('lang', app()->getLocale());
+		View::share('user', auth()->user());
 	}
 	
 	//custom
 	
     public function view($url='')
-    {
+    {	
+		$this->checkUserEnabled();
 		$sec = $this->repo->section($url);
-		if(!$sec) abort(404);
+		if(!$sec) abort($this->repo->sectionExists($url) ? 403 : 404);
 		$r = $this->prepare($sec);
 		return $r===null
 			? view('cms::page', $this->pageData($sec))
 			: $r;
     }
+	
+	private function checkUserEnabled(){
+		$user = auth()->user();
+		if($user && !$user->e){
+			$this->flash('message-danger', 'auth-locked');
+			auth()->logout();
+		}
+	}
 
 	private function pageData($s){
 		//shared: lang, user
 		//common
 		return [
-			'nav' => $this->repo->nav(),
+			//'nav' => $this->repo->nav(),
 			'sec' => $s,
 			'articles' => $this->repo->articles($s ? $s->id : 0),
 			'files' => $this->repo->files($s ? $s->id : 0),
