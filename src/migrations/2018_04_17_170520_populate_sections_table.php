@@ -16,12 +16,22 @@ class PopulateSectionsTable extends Migration
     {
 		DB::table('users')->insert(
 				[
+				[
 					'email' => 'admin@domain.com',
 					'password' => Hash::make('admin'),
 					'e' => 1,
 					'role' => 'a',
 					'lang' => 'en',
 					'name' => 'Admin',
+				],
+				[
+					'email' => 'reader@domain.com',
+					'password' => Hash::make('reader'),
+					'e' => 1,
+					'role' => 'r',
+					'lang' => 'en',
+					'name' => 'Reader',
+				],
 				]
 			);
 		$home = DB::table('sections')->insertGetId(
@@ -47,7 +57,8 @@ class PopulateSectionsTable extends Migration
 					'mode' => '',
 					'body' => '<ol>
 <li>Using browser go to home page of your project.
-<li>Log in with e-mail <kbd>admin@domain.com</kbd> and password <kbd>admin</kbd>.
+<li>Log in as admin with e-mail <kbd>admin@domain.com</kbd> and password <kbd>admin</kbd>.
+<li>Or log in as privileged reader with e-mail <kbd>reader@domain.com</kbd> and password <kbd>reader</kbd>.
 <li>Go to home page again.
 <li>In top menu bar there are links Sections and Users.
 <li>Use these links to manage sections and users.
@@ -79,6 +90,17 @@ class PopulateSectionsTable extends Migration
 					'mode' => '',
 					'body' => 'Info...',
 					'seq' => 30,
+				],
+				[
+					'parent_id' => null,
+					'name' => 'Protected',
+					'h1' => 'Protected',
+					'url' => 'protected',
+					'e' => 0,
+					'lang' => 'en',
+					'mode' => '',
+					'body' => 'Private data...',
+					'seq' => 40,
 				],
 				/*
 				[

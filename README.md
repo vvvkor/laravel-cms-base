@@ -3,13 +3,14 @@
 ## Features
 
 * Lightweight
-* Minimal footprint (just one table in database)
-* Pages hierarchy
+* Minimal footprint (just one additional table in database)
+* Manage users
+* Manage pages hierarchy (view as table or as nested list)
 * Public and protected pages
 * Publication can be planned for future
 * Many articles per page
 * Many uploads per article
-* Localizable (english and russian icluded)
+* Localizable (english and russian translations icluded)
 * Uses standard Laravel authentication
 * Uses bootstrap classes
 * Ready to use WYSIWYG CKEditor
@@ -93,7 +94,9 @@ $ php artisan vendor:publish --tag=ckeditor
 ## Usage
 
 1. Using browser go to home page of your project.
-2. Log in with e-mail `admin@domain.com` and password `admin`.
+2. Log in 
+    * as administrator with e-mail `admin@domain.com` and password `admin`.
+    * as privileged reader with e-mail `reader@domain.com` and password `reader`.
 3. Go to home page again.
 4. In top menu bar there are links `Sections` and `Users`.
 5. Use these links to manage sections and users.
