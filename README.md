@@ -97,5 +97,5 @@ $ php artisan vendor:publish --tag=ckeditor
 * Log in as administrator with e-mail `admin@domain.com` and password `admin`.
 * Or as privileged reader with e-mail `reader@domain.com` and password `reader`.
 * Go to home page again.
-* For administrator, on top of page there are links `Sections` and `Users`.
+* For administrator, on top of page there are links to manage `Sections` and `Users`.
 * For reader, there is a link to a protected page in top menu.
