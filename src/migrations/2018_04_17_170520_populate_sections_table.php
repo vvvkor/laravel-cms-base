@@ -60,8 +60,8 @@ class PopulateSectionsTable extends Migration
 <li>Log in as admin with e-mail <kbd>admin@domain.com</kbd> and password <kbd>admin</kbd>.
 <li>Or log in as privileged reader with e-mail <kbd>reader@domain.com</kbd> and password <kbd>reader</kbd>.
 <li>Go to home page again.
-<li>In top menu bar there are links Sections and Users.
-<li>Use these links to manage sections and users.
+<li>For administrator, on top of page there are links `Sections` and `Users`.
+<li>For reader, there is a link to a protected page in top menu.
 </ol>',
 					'seq' => 10,
 				]

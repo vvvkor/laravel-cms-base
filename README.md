@@ -93,10 +93,9 @@ $ php artisan vendor:publish --tag=ckeditor
 
 ## Usage
 
-1. Using browser go to home page of your project.
-2. Log in 
-    * as administrator with e-mail `admin@domain.com` and password `admin`.
-    * as privileged reader with e-mail `reader@domain.com` and password `reader`.
-3. Go to home page again.
-4. In top menu bar there are links `Sections` and `Users`.
-5. Use these links to manage sections and users.
+* Using browser go to home page of your project.
+* Log in as administrator with e-mail `admin@domain.com` and password `admin`.
+* Or as privileged reader with e-mail `reader@domain.com` and password `reader`.
+* Go to home page again.
+* For administrator, on top of page there are links `Sections` and `Users`.
+* For reader, there is a link to a protected page in top menu.
