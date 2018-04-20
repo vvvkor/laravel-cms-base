@@ -9,7 +9,7 @@
 * Publication can be planned for future
 * Many articles per page
 * Many uploads per article
-* Multilingual (english and russian icluded)
+* Localizable (english and russian icluded)
 * Uses standard Laravel authentication
 * Uses bootstrap classes
 * Ready to use WYSIWYG CKEditor
