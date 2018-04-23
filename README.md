@@ -21,7 +21,7 @@
 
 * Uses two database tables: `users` extended from standard Laravel authentication and `sections` for pages, articles, files.
 * `Cms` facade and `cms()` helper function.
-* Repository to read sections `SectionRepository`.
+* Repository of sections `SectionRepository`.
 * Policies for managing users and sections (`UserPolicy`, `SectionPolicy`).
 * Middleware: `CheckUserRole` and `CachePages`.
 * Thumbnails generated and cached with `intervention/image`.
