@@ -43,6 +43,7 @@ abstract class EntityController extends PageController
 		
 		//$this->share();
 		$this->middleware(function ($request, $next) {
+			if($x=$this->changeUserLang($request)) return $x;
 			//redirect?
             $redir = $this->prepare($this->repo->section(request()->path()), true);
 			if($redir) return $redir;

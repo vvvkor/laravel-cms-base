@@ -10,6 +10,7 @@ return [
 	'cancel' => 'Отмена',
 	'view' => 'Просмотр',
 	'nav' => 'Навигация',
+	'breadcrumbs' => 'Вы здесь:',
 	'download' => 'Скачать',
 	'downloads' => 'Загрузки',
 	'gallery' => 'Галерея',

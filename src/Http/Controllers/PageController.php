@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use vvvkor\cms\Repositories\SectionRepository as Repo;
 use vvvkor\cms\Facades\Cms;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -17,6 +18,7 @@ class PageController extends Controller
 	public function __construct(Repo $repo){
 		$this->repo = $repo;
 		$this->middleware(function ($request, $next) {
+            //if($x=$this->changeUserLang($request)) return $x;
             $this->share();
             return $next($request);
         });
@@ -26,6 +28,17 @@ class PageController extends Controller
 	protected function share(){
 		View::share('lang', app()->getLocale());
 		View::share('user', auth()->user());
+	}
+	
+	protected function changeUserLang($request){
+		if($request->isMethod('get') && isset($request->lang) && $request->lang){
+			$user = auth()->user();
+			if($user && $user->lang!=$request->lang){
+				//$this->flash('message-success', ' '.$request->lang);
+				DB::table('users')->where('id',$user->id)->update(['lang'=>$request->lang]);
+				return redirect($request->url());
+			}
+		}
 	}
 	
 	//custom

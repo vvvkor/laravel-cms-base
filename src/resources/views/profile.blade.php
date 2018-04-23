@@ -6,10 +6,27 @@
 	</a>
 	
 	@if(cms()->isAdmin())
+		{{-- admin menu --}}
+		@php ( $tabs = ['sections','users'] )
 		&mdash;
-		<a href="{{ route('admin.sections.index') }}">{{ __('cms::db.sections') }}</a>
-		|
-		<a href="{{ route('admin.users.index') }}">{{ __('cms::db.users') }}</a>
+		@foreach ($tabs as $tab)
+			@if(!$loop->first)
+				|
+			@endif
+			<a href="{{ route('admin.'.$tab.'.index') }}" class="{{ (strpos(URL::current(),route('admin.'.$tab.'.index'))===0) ? 'active font-weight-bold' : '' }}">{{ __('cms::db.'.$tab) }}</a>
+		@endforeach
+	@endif
+	
+	@if(@$table)
+		{{-- languages menu (for admin sections) --}}
+		@php ( $langs = ['en'=>'English', 'ru'=>'Русский'] )
+		&mdash;
+		@foreach ($langs as $code => $label)
+			@if(!$loop->first)
+				|
+			@endif
+			<a href="?lang={{ $code }}" class="{{ $user->lang==$code ? 'active font-weight-bold' : '' }}">{{ $label }}</a>
+		@endforeach
 	@endif
 	
 	

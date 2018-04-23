@@ -10,6 +10,7 @@ return [
 	'cancel' => 'Cancel',
 	'view' => 'View',
 	'nav' => 'Navigation',
+	'breadcrumbs' => 'You are here:',
 	'download' => 'Download',
 	'downloads' => 'Downloads',
 	'gallery' => 'Gallery',

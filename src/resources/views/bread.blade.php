@@ -6,9 +6,13 @@
 	@php ($cur = $cur->parent_id ? (@$nav[$cur->parent_id] ?: cms()->section($cur->parent_id,null,'id')) : null)
 @endwhile
 
-@if ($bread && (!@$table || ($table=='sections' && $sec->parent_id)))
+@if ($bread && (!@$table || ($table=='sections' /*&& $sec->parent_id*/)))
 	<nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
+	@if(@$table)
+		<li class="breadcrumb-item"><a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table) }}</a>
+	@endif
+
 	@foreach($bread as $v)
 		<li class="breadcrumb-item {{ $loop->last ? '' : 'active' }}">
 		@if ($loop->last)

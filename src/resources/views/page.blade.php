@@ -28,7 +28,7 @@
     </head>
     <body class="px-5 mx-auto" style="max-width:100em;">
 		<section class="my-3">
-			@component('cms::profile', ['user'=>@$user])
+			@component('cms::profile', ['user'=>@$user, 'table'=>@$table])
 			@endcomponent
 		</section>
 	
@@ -42,6 +42,7 @@
 
 		@if(@$nav)
 			@section('bread')
+				<h3 class="sr-only">{{ __('cms::common.breadcrumbs') }}</h3>
 				<nav class="">
 					@component('cms::bread',['nav'=>$nav, 'sec'=>@$sec, 'table'=>@$table])
 					@endcomponent
