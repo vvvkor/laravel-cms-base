@@ -1,5 +1,7 @@
 # cms
 
+Minimalist CMS for Laravel
+
 ## Features
 
 * Lightweight
@@ -20,6 +22,7 @@
 ## Developer info
 
 * Uses two database tables: `users` extended from standard Laravel authentication and `sections` for pages, articles, files.
+* Database migrations included.
 * `Cms` facade and `cms()` helper function.
 * Repository of sections `SectionRepository`.
 * Policies for managing users and sections (`UserPolicy`, `SectionPolicy`).
