@@ -43,6 +43,7 @@ $ php artisan make:cms
 ### Configure database (if you have not alredy)
 
 Set parameters in `.env` or `config/database.php` files of your project.
+Depending on DBMS version (MySQL < 5.7.7.), you may need to [fix string length](https://github.com/laravel/framework/issues/18201) .
 
 ### Enable authorization (if you have not alredy)
 
