@@ -58,6 +58,7 @@ class SectionController extends EntityController
 			't' => 'number'
 			],
 		'lang' => [
+			'v' => 'max:2',
 			],
 		'pub_dt' => [
 			't' => 'datetime-local'
@@ -94,6 +95,15 @@ class SectionController extends EntityController
 			}
 		}
 		return $r;
+	}
+
+	protected function recordError($request, $id=0){
+		//unique url
+		$ref = $this->repo->sectionExists($request->url);
+		if($ref && $ref!=$id){
+			return ' '.__('cms::alert.unique-busy', ['field'=>__('cms::db.sections-url'), 'value'=>$request->url]);
+		}
+		return false;
 	}
 
 }

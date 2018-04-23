@@ -16,4 +16,6 @@ return [
 	'ok-upload' => 'File uploaded',
 	'ok-unload' => 'File deleted',
 	
+	'unique-busy' => 'The ":field" field must be unique. Value ":value" is busy.',
+
 ];

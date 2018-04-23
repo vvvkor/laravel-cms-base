@@ -1,6 +1,8 @@
 @if (@$user)
 	<a class="-btn -btn-link">
-	{{ __('cms::common.hello') }}, <b>{{ $user->name }}</b> ({{ __('cms::list.users-role-'.$user->role) }})
+	{{ __('cms::common.hello') }}, 
+	<a href="{{ route('profile.edit', ['id'=>$user->id]) }}"><b>{{ $user->name }}</b></a>
+	({{ __('cms::list.users-role-'.$user->role) }})
 	</a>
 	
 	@if(cms()->isAdmin())

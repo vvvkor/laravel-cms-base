@@ -34,12 +34,12 @@ class SectionRepository {
 	}
 	
 	public function section($path, $fld=null, $by='url'){
-		$s = $this->section->where([[$by,$path]])->allowed(1);
+		$s = $this->section->where([[$by, ''.$path]])->allowed(1);
 		return $fld===null ? $s->first() : $s->value($fld);
 	}
 	
 	public function sectionExists($path, $by='url'){
-		$s = $this->section->where([[$by,$path]]);
+		$s = $this->section->where([[$by, ''.$path]]);
 		return $s ? $s->value('id') : false;
 	}
 	

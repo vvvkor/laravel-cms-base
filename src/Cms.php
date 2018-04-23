@@ -38,9 +38,11 @@ class Cms{
 		return $id
 			?
 			//very naive caching
-			Cache::remember('rec-'.$t.'-'.$id.'-'.$fld, 1, function() use ($t, $id, $fld){
-				return DB::table($t)->where('id',$id)->value($fld);
-			})
+			Cache::remember(/*auth()->user()->id.'#'.*/ 'rec-'.$t.'-'.$id.'-'.$fld, 
+				.1, //timeout, minutes
+				function() use ($t, $id, $fld){
+					return DB::table($t)->where('id',$id)->value($fld);
+				})
 			: null;
 			
 	}
@@ -79,8 +81,8 @@ class Cms{
 						->middleware('vvvkor\cms\Http\Middleware\CheckUserRole');
 				});
 			}
-			
-			Route::get('/',$x.'PageController@view')->where('sec','.*')->name('start')->middleware('vvvkor\cms\Http\Middleware\CachePages');
+			Route::resource('profile',$x.'ProfileController')->middleware('auth');
+			Route::get('/',$x.'PageController@view')->name('start')->middleware('vvvkor\cms\Http\Middleware\CachePages');
 			Route::get('download/{entity}/{id}/{filename?}',$x.'DownloadController@download')->name('download');
 			Route::get('getfile/{entity}/{id}/{width?}/{height?}/{filename?}',$x.'DownloadController@getfile')->name('getfile');
 			Route::get('{url}',$x.'PageController@view')->where('url','.*')->name('page')->middleware('vvvkor\cms\Http\Middleware\CachePages');

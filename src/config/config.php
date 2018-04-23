@@ -7,7 +7,7 @@ return [
 	'page403' => false, // false:abort(403); true:view('cms::errors.403')
 
 	//cache
-	'cachePagesTimeout' => 0, //minutes 1440
+	'cachePagesTimeout' => 1, //minutes 1440
 	'cacheThumbsTimeout' => 1440, //minutes 1440
 
 	//interface

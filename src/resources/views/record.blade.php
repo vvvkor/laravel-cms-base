@@ -1,15 +1,21 @@
-<h2 class="my-3">
-<a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table.'1') }}</a>
-@if(isset($rec))
-	<span class="text-secondary">#{{ $rec->id }}</span>
-	<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ $rec->e ? '' : 'bg-warning' }}">{{ $rec->name }}</a>
-	@if($table=='sections')
-		<a href="{{ route('page', ['url'=>$rec->url]) }}" class="text-secondary" title="{{ __('cms::common.view') }}">&rarr;</a>
+@if(isset($heading))
+	@if(strlen($heading)>0)
+		<h2 class="my-3">{{ $heading }}</h3>
 	@endif
 @else
-	<a class="text-secondary" href="{{ route('admin.'.$table.'.create') }}">{{ __('cms::common.add') }}</a>
+	<h2 class="my-3">
+	<a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table.'1') }}</a>
+	@if(isset($rec))
+		<span class="text-secondary">#{{ $rec->id }}</span>
+		<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ $rec->e ? '' : 'bg-warning' }}">{{ $rec->name }}</a>
+		@if($table=='sections')
+			<a href="{{ route('page', ['url'=>$rec->url]) }}" class="text-secondary" title="{{ __('cms::common.view') }}">&rarr;</a>
+		@endif
+	@else
+		<a class="text-secondary" href="{{ route('admin.'.$table.'.create') }}">{{ __('cms::common.add') }}</a>
+	@endif
+	</h2>
 @endif
-</h2>
 
 @foreach ($errors->all() as $err)
 <div class="alert alert-warning">
@@ -17,7 +23,7 @@
 </div>
 @endforeach
 
-<form method="POST" action="{{ @$rec ? route('admin.'.$table.'.update',$rec->id) : route('admin.'.$table.'.store') }}"
+<form method="POST" action="{{ isset($route) ? $route : (@$rec ? route('admin.'.$table.'.update',$rec->id) : route('admin.'.$table.'.store')) }}"
 enctype="multipart/form-data">
 	@csrf
 	@if(@$rec)
@@ -52,11 +58,14 @@ enctype="multipart/form-data">
 			@else
 				<input type="submit" value="{{ __('cms::common.add') }}" class="btn btn-success">
 			@endif
-			<a href="{{ route('admin.'.$table.'.index') }}" class="btn btn-link text-secondary">{{ __('cms::common.cancel') }}</a>
-			@if(@$rec)
-				@can('delete', $rec)
-					<a href="{{ route('admin.'.$table.'.show', ['id'=>$rec->id]) }}" class="btn btn-link text-danger">{{ __('cms::common.delete') }}</a>
-				@endcan
+			
+			@if(!isset($links) || $links!==false)
+				<a href="{{ route('admin.'.$table.'.index') }}" class="btn btn-link text-secondary">{{ __('cms::common.cancel') }}</a>
+				@if(@$rec)
+					@can('delete', $rec)
+						<a href="{{ route('admin.'.$table.'.show', ['id'=>$rec->id]) }}" class="btn btn-link text-danger">{{ __('cms::common.delete') }}</a>
+					@endcan
+				@endif
 			@endif
 		</label>
     </div>

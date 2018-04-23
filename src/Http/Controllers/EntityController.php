@@ -111,6 +111,10 @@ abstract class EntityController extends PageController
     {
 		$this->authorize('create',$this->modelClass);
         $request->validate($this->validatedFields(1));
+		if($err=$this->recordError($request, null)){
+			$this->flash('message-warning',$err);
+			return back()->withInput();
+		}
         
 		try{
 			$d = $this->preparePosted($request);
@@ -133,11 +137,14 @@ abstract class EntityController extends PageController
 		return $this->confirmDelete($id);
 	}
 	
-    public function edit($id)
+    public function edit($id, $add=null)
     {
 		$rec = $this->model->findOrFail($id);
 		$this->authorize('update', $rec);
-		return view('cms::page-record', [
+		return view('cms::page-record', 
+			($add===null ? [] : $add)
+			+
+			[
 			'title' => __('cms::db.'.$this->entity).' - '.__('cms::common.edit').
 				' #'.$rec->id, //.' - '.$rec->name
 			'fields' => $this->formFields(),
@@ -150,9 +157,13 @@ abstract class EntityController extends PageController
 			);
 	}
 	
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $route=null)
     {
         $request->validate($this->validatedFields(0));
+		if($err=$this->recordError($request, $id)){
+			$this->flash('message-warning',$err);
+			return back()->withInput();
+		}
         $rec = $this->model->findOrFail($id);
 		$this->authorize('update', $rec);
         $s = $this->preparePosted($request, $rec);
@@ -161,12 +172,12 @@ abstract class EntityController extends PageController
 		}
 		catch (\Illuminate\Database\QueryException $e){
 			$this->flash('message-danger', 'fail-save', $e);
-			return redirect(route('admin.'.$this->entity.'.edit',$id));
+			return redirect($route===null ? route('admin.'.$this->entity.'.edit',$id) : $route);
 		}
 		//$request->session()->flash('message-success', 'Saved');
 		$this->flash('message-success', 'ok-save');
 		$this->upload($request, $rec);
-        return redirect(route('admin.'.$this->entity.'.edit',['id'=>$rec->id]));
+        return redirect($route===null ? route('admin.'.$this->entity.'.edit',['id'=>$rec->id]) : $route);
     }
 	
     public function destroy($id)
@@ -389,6 +400,10 @@ abstract class EntityController extends PageController
 		$r = Route::getFacadeRoot()->current()->uri();
 		if($first) $r = strtok($r,'/');
 		return $r;
+	}
+	
+	protected function recordError($request, $id=0){
+		return false;
 	}
 	
 }

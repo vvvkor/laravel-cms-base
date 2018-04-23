@@ -52,4 +52,13 @@ class UserController extends EntityController
 	public function __construct(Repo $repo, User $model, DatabaseManager $db){
 		parent::__construct($repo, $model, $db);
    	}
+
+	protected function recordError($request, $id=0){
+		//unique email
+		$ref = $this->db->table('users')->where('email', $request->email)->value('id');
+		if($ref && $ref!=$id){
+			return ' '.__('cms::alert.unique-busy', ['field'=>__('cms::db.users-email'), 'value'=>$request->email]);
+		}
+		return false;
+	}
 }

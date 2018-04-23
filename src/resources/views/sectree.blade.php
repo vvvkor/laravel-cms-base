@@ -5,10 +5,10 @@
 		@php ( $nm = $v->name==='' ? '/'.$v->url : $v->name )
 		<li>
 			@can('update', $v)
-				<a class="text-primary" href="{{ route('admin.sections.turn', ['id' => $v->id, 'do' => $v->e ? 'off' : 'on']) }}"
+				<a class="text-primary" href="{{ route('admin.sections.edit', ['id'=>$v->id]) }}" title="{{ __('cms::common.edit') }}">#</a>
+				<a class="text-info" href="{{ route('admin.sections.turn', ['id' => $v->id, 'do' => $v->e ? 'off' : 'on']) }}"
 					title="{{ __('cms::db.sections-e'.($v->e ? '-turn-off' : '-turn-on')) }}">
 					~</a>
-				<a class="text-info" href="{{ route('admin.sections.edit', ['id'=>$v->id]) }}" title="{{ __('cms::common.edit') }}">#</a>
 			@endcan
 			@can('delete', $v)
 				<a class="text-danger" href="{{ route('admin.sections.show', ['id'=>$v->id]) }}" title="{{ __('cms::common.delete') }}">&times;</a>

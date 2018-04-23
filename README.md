@@ -5,19 +5,39 @@
 * Lightweight
 * Minimal footprint (just one additional table in database)
 * Manage users
-* Manage pages hierarchy (view as table or as nested list)
-* Public and protected pages
+* Profile page
+* Manage pages ("sections") hierarchy (view as table or as nested list)
+* Public and protected pages (and attached files)
 * Publication can be planned for future
 * Many articles per page
 * Many uploads per article
 * Localizable (english and russian translations icluded)
 * Uses standard Laravel authentication
-* Uses bootstrap classes
 * Ready to use WYSIWYG CKEditor
 * Cache pages
 * Image thumbnails (also cached)
 
+## Developer info
+
+* Uses two database tables: `users` extended from standard Laravel authentication and `sections` for pages, articles, files.
+* `Cms` facade and `cms()` helper function.
+* Repository for pages access `SectionRepository`.
+* Policies for managing users and sections (`UserPolicy`, `SectionPolicy`).
+* Middleware: `CheckUserRole` and `CachePages`.
+* Thumbnails generated and cached with `intervention/image`.
+* Views marked up with bootstrap classes.
+
 ## Install
+
+In short:
+
+Configure database then run:
+```
+$ php artisan make:auth
+$ composer require vvvkor/cms
+$ php artisan migrate
+$ php artisan make:cms
+```
 
 ### Configure database (if you have not alredy)
 
@@ -57,7 +77,7 @@ $ php artisan migrate
 To add routes to `routes/web.php` run
 
 ```
-$ php artisan make:auth
+$ php artisan make:cms
 ```
 
 or add manually to `routes/web.php`

@@ -21,22 +21,28 @@ class CachePages
      */
     public function handle($request, Closure $next)
     {
-        $key = $this->getKey($request->fullUrl());
-        if($key && \Cache::has($key)){
-			\Log::info('page from cache');
-			return response(\Cache::get($key));
-        }
+		//check cache if not-authorized
+		if(!auth()->check()){
+			$key = $this->getKey($request->fullUrl());
+			if($key && \Cache::has($key)){
+				\Log::info('page from cache');
+				return response(\Cache::get($key));
+			}
+		}
         return $next($request);
     }
 	
 	public function terminate($request, $response)
 	{
-		$timeout = config('cms.cachePagesTimeout',0);
-		if($timeout>0){
-			$key = $this->getKey($request->fullUrl());
-			if ($key && !\Cache::has($key)){
-				\Log::info('save page to cache');
-				\Cache::put($key, $response->getContent(), $timeout);
+		//can cache if (not-authorized && 200 (&& public-section))
+		if($response->status()==200 && !auth()->check()){
+			$timeout = config('cms.cachePagesTimeout',0);
+			if($timeout>0){
+				$key = $this->getKey($request->fullUrl());
+				if ($key && !\Cache::has($key)){
+					\Log::info('save page to cache');
+					\Cache::put($key, $response->getContent(), $timeout);
+				}
 			}
 		}
 	}
