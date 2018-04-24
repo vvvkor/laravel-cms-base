@@ -50,16 +50,18 @@
 
 	@foreach ($records as $v)
 	@can('view', $v)
-    <tr class="{{ $v->e ? '' : 'table-warning' }}">
+    <tr class="{{ (isset($v->e) && !$v->e) ? 'table-warning' : '' }}">
 		<td>
 			@can('update', $v)
 				<a class="text-primary" href="{{ route('admin.'.$table.'.edit', ['id' => $v->id]) }}"
 					title="{{ __('cms::common.edit') }} {{ $v->name }}">
 					{{ __('cms::common.edit') }}</a>
-				<a class="text-info" href="{{ route('admin.'.$table.'.turn', ['id' => $v->id, 'do' => $v->e ? 'off' : 'on']) }}"
-					title="{{ __('cms::db.'.$table.'-e'.($v->e ? '-turn-off' : '-turn-on')) }}">
-					{{-- __('cms::db.'.$table.'-e'.($v->e ? '' : '-off')) --}}
-					{{ __('cms::db.'.$table.'-e'.($v->e ? '-turn-off' : '-turn-on')) }}</a>
+				@if(isset($v->e))
+					<a class="text-info" href="{{ route('admin.'.$table.'.turn', ['id' => $v->id, 'do' => $v->e ? 'off' : 'on']) }}"
+						title="{{ __('cms::db.'.$table.'-e'.($v->e ? '-turn-off' : '-turn-on')) }}">
+						{{-- __('cms::db.'.$table.'-e'.($v->e ? '' : '-off')) --}}
+						{{ __('cms::db.'.$table.'-e'.($v->e ? '-turn-off' : '-turn-on')) }}</a>
+				@endif
 			@endcan
 			@can('delete', $v)
 				{{-- confirmDelete --}}

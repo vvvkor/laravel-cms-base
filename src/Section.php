@@ -2,11 +2,12 @@
 
 namespace vvvkor\cms;
 
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use vvvkor\cms\Facades\Cms;
+use vvvkor\cms\Entity;
 
-class Section extends Model
+class Section extends Entity //Model
 {
     //protected $fillable = ['name','url','body','mode'];
 	protected $guarded = ['id']; 

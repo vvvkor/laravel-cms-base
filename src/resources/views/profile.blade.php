@@ -7,9 +7,8 @@
 	
 	@if(cms()->isAdmin())
 		{{-- admin menu --}}
-		@php ( $tabs = ['sections','users'] )
 		&mdash;
-		@foreach ($tabs as $tab)
+		@foreach (config('cms.adminEntities') as $tab)
 			@if(!$loop->first)
 				|
 			@endif
@@ -19,9 +18,8 @@
 	
 	@if(@$table)
 		{{-- languages menu (for admin sections) --}}
-		@php ( $langs = ['en'=>'English', 'ru'=>'Русский'] )
 		&mdash;
-		@foreach ($langs as $code => $label)
+		@foreach (config('cms.languages') as $code => $label)
 			@if(!$loop->first)
 				|
 			@endif

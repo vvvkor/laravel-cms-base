@@ -59,24 +59,21 @@ class Cms{
 			//'namespace' => 'vvvkor\cms\Http\Controllers', // anyway it is relative to App\Http\Controllers :(
 			], function () {
 			$x = '\\vvvkor\\cms\\Http\\Controllers\\';
-			$res = array(
-				'sections' => $x.'SectionController',
-				'users' => $x.'UserController',
-				);
 			$adm = 'admin/';
-			foreach($res as $k=>$v){ 
-				//Route::get($adm.$k.'/{id}/del', $v.'@confirmDelete');//ask to delete -> @show
-				Route::get($adm.$k.'/{id}/unload/{field}', $v.'@unload') //delete uploaded
-					->name('admin.'.$k.'.unload')
+			foreach(config('cms.adminEntities') as $table){
+				$ctrl = $x.studly_case(str_singular($table)).'Controller';
+				//Route::get($adm.$table.'/{id}/del', $ctrl.'@confirmDelete');//ask to delete -> @show
+				Route::get($adm.$table.'/{id}/unload/{field}', $ctrl.'@unload') //delete uploaded
+					->name('admin.'.$table.'.unload')
 					->middleware('auth')
 					->middleware('vvvkor\cms\Http\Middleware\CheckUserRole');
-				Route::get($adm.$k.'/{id}/{do}', $v.'@turn') //turn on/off
+				Route::get($adm.$table.'/{id}/{do}', $ctrl.'@turn') //turn on/off
 					->where('do','on|off')
-					->name('admin.'.$k.'.turn')
+					->name('admin.'.$table.'.turn')
 					->middleware('auth')
 					->middleware('vvvkor\cms\Http\Middleware\CheckUserRole');
-				Route::group(['as' => 'admin.'], function() use ($adm,$k,$v) {
-					Route::resource($adm.$k, $v)
+				Route::group(['as' => 'admin.'], function() use ($adm,$table,$ctrl) {
+					Route::resource($adm.$table, $ctrl)
 						->middleware('auth')
 						->middleware('vvvkor\cms\Http\Middleware\CheckUserRole');
 				});

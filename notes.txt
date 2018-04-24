@@ -1,0 +1,9 @@
+Adding interface for database table
+
+- (create and run migration to create table in database)
+- create model class
+- create controller class
+- create policy class
+- add policy class to CmsServiceProvider $policies
+- add table name to cms config adminEntities
+- add translations for table name and column names

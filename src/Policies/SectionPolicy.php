@@ -3,46 +3,20 @@
 namespace vvvkor\cms\Policies;
 
 use App\User;
-use vvvkor\cms\Section;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Database\Eloquent\Model;
+//use vvvkor\cms\Entity;
+//use vvvkor\cms\Section;
 use vvvkor\cms\Facades\Cms;
 
-class SectionPolicy
+class SectionPolicy extends EntityPolicy
 {
-    use HandlesAuthorization;
-
-	/*
-	public function before($user, $ability)
-	{
-		return Cms::isAdmin();
-	}
-	*/
-
-    public function index(User $user)
-    {
-		return Cms::isAdmin();
-    }
 	
-    public function view(User $user, Section $section)
+    public function view(User $user, Model $model) //Section $model
     {
-		return $section->e
+		return $model->e
 			? true
 			: Cms::isReader();
     }
 
-    public function create(User $user)
-    {
-		return Cms::isAdmin();
-    }
-
-    public function update(User $user, Section $section)
-    {
-		return Cms::isAdmin();
-    }
-
-    public function delete(User $user, Section $section)
-    {
-		return Cms::isAdmin();
-    }
 	
 }

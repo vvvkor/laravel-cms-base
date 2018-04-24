@@ -10,6 +10,7 @@ class SectionController extends EntityController
 {
     
 	protected $entity = 'sections';
+	protected $uniques = ['url'];
 	protected $lookups = ['sections'=>'name','users'=>'name'];
 	
 	protected $tabFields  = ['id','url','parent_id','redirect_id','name','h1','e','mode','lang','fnm','seq','pub_dt','owner_id'];
@@ -69,12 +70,6 @@ class SectionController extends EntityController
 			'u' => true,
 			],
 		];
-
-
-	public function __construct(Repo $repo, Section $model, DatabaseManager $db){
-		parent::__construct($repo, $model, $db);
-   	}
-	
 	
 	public function aside($rec){
 		$modes = ['','a','f'];
@@ -95,15 +90,6 @@ class SectionController extends EntityController
 			}
 		}
 		return $r;
-	}
-
-	protected function recordError($request, $id=0){
-		//unique url
-		$ref = $this->repo->sectionExists($request->url);
-		if($ref && $ref!=$id){
-			return ' '.__('cms::alert.unique-busy', ['field'=>__('cms::db.sections-url'), 'value'=>$request->url]);
-		}
-		return false;
 	}
 
 }

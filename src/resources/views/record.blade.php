@@ -7,7 +7,7 @@
 	<a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table.'1') }}</a>
 	@if(isset($rec))
 		<span class="text-secondary">#{{ $rec->id }}</span>
-		<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ $rec->e ? '' : 'bg-warning' }}">{{ $rec->name }}</a>
+		<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ (isset($rec->e) && !$rec->e) ? 'bg-warning' : '' }}">{{ $rec->name }}</a>
 		@if($table=='sections')
 			<a href="{{ route('page', ['url'=>$rec->url]) }}" class="text-secondary" title="{{ __('cms::common.view') }}">&rarr;</a>
 		@endif

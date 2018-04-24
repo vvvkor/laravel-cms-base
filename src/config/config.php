@@ -2,6 +2,10 @@
 
 return [
 
+	//nav
+	'languages' => ['en'=>'English', 'ru'=>'Русский', 'es'=>'Español'],
+	'adminEntities' => ['sections','users','roles','modes'],
+
 	//access
 	'adminRole' => 'a', //users.role
 	'page403' => false, // false:abort(403); true:view('cms::errors.403')

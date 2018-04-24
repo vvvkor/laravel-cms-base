@@ -54,9 +54,9 @@ class ProfileController extends UserController
 			]);
 	}
 	
+	//dont check policy
+	//any authorized user has access to his profile
 	function authorize($ability, $arguments = []){
-		//dont check policy
-		//any authorized user has access to his profile
 		return true;
 	}
 	

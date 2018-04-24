@@ -21,6 +21,8 @@ class CmsServiceProvider extends ServiceProvider
     protected $policies = [
 		'App\User' => 'vvvkor\cms\Policies\UserPolicy',
 		'vvvkor\cms\Section' => 'vvvkor\cms\Policies\SectionPolicy',
+		'vvvkor\cms\Role' => 'vvvkor\cms\Policies\RolePolicy',
+		'vvvkor\cms\Mode' => 'vvvkor\cms\Policies\ModePolicy',
 	];
 	
     /**
@@ -100,18 +102,34 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerCms();
-
+		$this->registerCms();
+		
 		// register controllers
 		$this->app->make('vvvkor\cms\Http\Controllers\PageController');
 		$this->app->make('vvvkor\cms\Http\Controllers\SectionController');
 		$this->app->make('vvvkor\cms\Http\Controllers\DownloadController');
 		
+
 		//merge user config with default config
 		$this->mergeConfigFrom(
 			__DIR__.'/config/config.php', 'cms'
 		);
-    }
+		
+		//use contextual binding to inject models
+ 		foreach(config('cms.adminEntities') as $table){
+			$name = studly_case(str_singular($table));
+			$this->app->when('vvvkor\cms\Http\Controllers\\'.$name.'Controller')
+				->needs('vvvkor\cms\Entity')
+				->give('vvvkor\cms\\'.$name);
+			/*
+			//$this->app->when('vvvkor\cms\Http\Controllers\\'.$name.'Controller')
+			//$this->app->when('vvvkor\cms\\'.$name)
+				->needs('vvvkor\cms\EntityPolicy')
+				->give('vvvkor\cms\Policies\\'.$name.'Policy');
+			*/
+		}
+
+   }
 	
     private function registerCms()
     {
@@ -128,24 +146,8 @@ class CmsServiceProvider extends ServiceProvider
 	public static function routes()
     {
 		
-		Route::group(['middleware' => ['web']], function () {
-			$x = '\\vvvkor\\cms\\Http\\Controllers\\';
-			$res = array(
-				'sections' => $x.'SectionController',
-				'users' => $x.'UserController',
-				);
-			$adm = 'admin/';
-			foreach($res as $k=>$v){ 
-				//Route::get($adm.$k.'/{id}/del', $v.'@confirmDelete');//ask to delete -> @show
-				Route::get($adm.$k.'/{id}/unload/{field}', $v.'@unload')->middleware('auth');//delete uploaded
-				Route::resource($adm.$k, $v)->middleware('auth');
-			}
-			
-			Route::get('/',$x.'PageController@view')->where('sec','.*')->name('start')->middleware('vvvkor\cms\Http\Middleware\CachePages');
-			Route::get('download/{entity}/{id}/{filename?}',$x.'DownloadController@download')->name('download');
-			Route::get('getfile/{entity}/{id}/{width?}/{height?}/{filename?}',$x.'DownloadController@getfile')->name('getfile');
-			Route::get('{url}',$x.'PageController@view')->where('url','.*')->name('front')->middleware('vvvkor\cms\Http\Middleware\CachePages');
-		});
+		Route::group(...);
+		Route::get(...);
     }
 	*/
 }
