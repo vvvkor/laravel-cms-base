@@ -21,8 +21,8 @@ class CmsServiceProvider extends ServiceProvider
     protected $policies = [
 		'App\User' => 'vvvkor\cms\Policies\UserPolicy',
 		'vvvkor\cms\Section' => 'vvvkor\cms\Policies\SectionPolicy',
-		'vvvkor\cms\Role' => 'vvvkor\cms\Policies\RolePolicy',
-		'vvvkor\cms\Mode' => 'vvvkor\cms\Policies\ModePolicy',
+		//'vvvkor\cms\Role' => 'vvvkor\cms\Policies\RolePolicy',
+		//'vvvkor\cms\Mode' => 'vvvkor\cms\Policies\ModePolicy',
 	];
 	
     /**

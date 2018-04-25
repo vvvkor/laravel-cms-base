@@ -3,11 +3,11 @@
 namespace vvvkor\cms\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+//use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use vvvkor\cms\Repositories\SectionRepository as Repo;
-use vvvkor\cms\Facades\Cms;
+//use vvvkor\cms\Facades\Cms;
 use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller

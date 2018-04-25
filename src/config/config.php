@@ -4,7 +4,7 @@ return [
 
 	//nav
 	'languages' => ['en'=>'English', 'ru'=>'Русский', 'es'=>'Español'],
-	'adminEntities' => ['sections','users','roles','modes'],
+	'adminEntities' => ['sections','users','roles','modes','categories'],
 
 	//access
 	'adminRole' => 'a', //users.role

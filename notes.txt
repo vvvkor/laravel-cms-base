@@ -1,11 +1,13 @@
 Adding interface for database table
 
 - (create and run migration to create table in database)
-- create model class
-- create controller class
-- create policy class
-- add policy class to CmsServiceProvider $policies
+- create model class (extends Lookup or EntityBasic or Entity or Model)
+- create controller class (extends LookupController or EntityController)
 - add table name to cms config adminEntities
 - add translations for table name and column names
+- (if policy required)
+-- create policy class (extends EntityPolicy)
+-- add policy class to CmsServiceProvider $policies
+-- set $policy = true in controller
 ! routes generated automatically
 ! models injected automatically

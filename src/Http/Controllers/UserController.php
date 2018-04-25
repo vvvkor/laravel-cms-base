@@ -10,6 +10,7 @@ class UserController extends CommonController
 {
     
 	protected $entity = 'users';
+	protected $policy = true;
 	protected $uniques = ['email'];
 	
 	protected $tabFields  = ['id','name','email','lang','e','role'];

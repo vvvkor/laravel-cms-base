@@ -3,7 +3,7 @@
 namespace vvvkor\cms\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\DB;
 
 use vvvkor\cms\Repositories\SectionRepository as Repo;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +19,8 @@ use Illuminate\Http\File;
 abstract class CommonController extends PageController
 {
 	
-	protected $entity = 'sections';
+	protected $entity = '';
+	protected $policy = false;
 	protected $nmf = 'name';
 	protected $uniques = [];
 	protected $lookups = [];
@@ -77,14 +78,17 @@ abstract class CommonController extends PageController
 	
 	protected function share(){
 		parent::share();
-		View::share('canCreate', auth()->user()->can('create',$this->modelClass));
+		$cc = $this->policy
+			? auth()->user()->can('create',$this->modelClass)
+			: true;
+		View::share('canCreate', $cc);
 	}
 	
 	//actions
 	
     public function index(Request $request)
     {
-		$this->authorize('index', $this->modelClass);
+		if($this->policy) $this->authorize('index', $this->modelClass);
 		//$cols = $this->db->getSchemaBuilder()->getColumnListing($this->entity);
 		$d = $this->model->paginate(config('cms.perPageAdmin',20));
 		return view('cms::page-table', [
@@ -99,7 +103,7 @@ abstract class CommonController extends PageController
 
     public function create()
     {
-		$this->authorize('create',$this->modelClass);
+		if($this->policy) $this->authorize('create',$this->modelClass);
         return view('cms::page-record', [
 			'title' => __('cms::db.'.$this->entity).' - '.__('cms::common.add'),
 			'fields' => $this->formFields(1),
@@ -111,7 +115,7 @@ abstract class CommonController extends PageController
 
     public function store(Request $request)
     {
-		$this->authorize('create',$this->modelClass);
+		if($this->policy) $this->authorize('create',$this->modelClass);
         $request->validate($this->validatedFields(1));
 		if($err=$this->checkUniques($request, null)){
 			$this->flash('message-warning',$err);
@@ -134,7 +138,7 @@ abstract class CommonController extends PageController
     public function show($id='')
 	{
 		//$rec = $this->model->findOrFail($id);
-		//$this->authorize('view', $rec);
+		//if($this->policy) $this->authorize('view', $rec);
 		//return $id;
 		return $this->confirmDelete($id);
 	}
@@ -142,7 +146,7 @@ abstract class CommonController extends PageController
     public function edit($id, $add=null)
     {
 		$rec = $this->model->findOrFail($id);
-		$this->authorize('update', $rec);
+		if($this->policy) $this->authorize('update', $rec);
 		return view('cms::page-record', 
 			($add===null ? [] : $add)
 			+
@@ -167,7 +171,7 @@ abstract class CommonController extends PageController
 			return back()->withInput();
 		}
         $rec = $this->model->findOrFail($id);
-		$this->authorize('update', $rec);
+		if($this->policy) $this->authorize('update', $rec);
         $s = $this->preparePosted($request, $rec);
 		try{
 			$rec->save();
@@ -185,7 +189,7 @@ abstract class CommonController extends PageController
     public function destroy($id)
     {
 		$rec = $this->model->findOrFail($id);
-		$this->authorize('delete', $rec);
+		if($this->policy) $this->authorize('delete', $rec);
 		try{
 			$this->model->destroy($id);
 		}
@@ -203,7 +207,7 @@ abstract class CommonController extends PageController
     public function confirmDelete($id)
     {
 		$rec = $this->model->findOrFail($id);
-		$this->authorize('delete', $rec);
+		if($this->policy) $this->authorize('delete', $rec);
         return view('cms::page-delete', [
 			'title' => __('cms::db.'.$this->entity).' - '.__('cms::common.delete').
 				' #'.$rec->id, //.' - '.$rec->name,
@@ -216,7 +220,7 @@ abstract class CommonController extends PageController
 
    public function unload($id,$field){
 		$rec = $this->model->findOrFail($id);
-		$this->authorize('update', $rec);
+		if($this->policy) $this->authorize('update', $rec);
 		try{
 			$fuid = $this->fuid($field);
 			$del = $rec->$fuid;
@@ -234,7 +238,7 @@ abstract class CommonController extends PageController
 
 	public function turn($id, $do){
 		$rec = $this->model->findOrFail($id);
-		$this->authorize('update', $rec);
+		if($this->policy) $this->authorize('update', $rec);
 		try{
 			if($do=='on') $rec->e = 1;
 			else if($do=='off') $rec->e = 0;
@@ -272,6 +276,7 @@ abstract class CommonController extends PageController
 		return [
 			//admin
 			'table' => $this->entity, // subs, attach ...
+			'policy' => $this->policy,
 			'nmf' => $this->nmf, // hints
 			//'canCreate' => auth()->user()->can('create', $this->modelClass), //shared
 			//common

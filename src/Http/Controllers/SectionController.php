@@ -2,14 +2,15 @@
 
 namespace vvvkor\cms\Http\Controllers;
 
-use Illuminate\Database\DatabaseManager;
-use vvvkor\cms\Repositories\SectionRepository as Repo;
-use vvvkor\cms\Section as Section;
+//use Illuminate\Database\DatabaseManager;
+//use vvvkor\cms\Repositories\SectionRepository as Repo;
+//use vvvkor\cms\Section as Section;
 
 class SectionController extends EntityController
 {
     
-	protected $entity = 'sections';
+	//protected $entity = 'sections';
+	protected $policy = true;
 	protected $uniques = ['url'];
 	protected $lookups = ['sections'=>'name','users'=>'name'];
 	
@@ -81,7 +82,7 @@ class SectionController extends EntityController
 					'aside' => 1,
 					'tag' => $mode,
 					'title' => __('cms::list.sections-mode-'.$mode),
-					'model' => 'vvvkor\cms\Section',
+					//'model' => 'vvvkor\cms\Section',
 					'table' => 'sections',
 					'columns' => $this->tableFields(1),
 					'records' => $d,

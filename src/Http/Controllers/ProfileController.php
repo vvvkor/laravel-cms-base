@@ -3,7 +3,7 @@
 namespace vvvkor\cms\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Database\DatabaseManager;
+//use Illuminate\Database\DatabaseManager;
 use vvvkor\cms\Repositories\SectionRepository as Repo;
 use App\User;
 

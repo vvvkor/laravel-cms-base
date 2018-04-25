@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\DatabaseManager;
 use vvvkor\cms\Repositories\SectionRepository as Repo;
+use vvvkor\cms\Section;
 //use Illuminate\Support\Facades\DB;
 //use Illuminate\Http\Response;
 //use Illuminate\Support\Facades\File;
@@ -18,7 +19,7 @@ class DownloadController extends Controller
 	
 	private $dirThumbs = 'thumbs';
 	
-	public function __construct(DatabaseManager $db, Repo $repo){
+	public function __construct(Repo $repo, Section $model, DatabaseManager $db){
 		$this->db = $db;
 		$this->repo = $repo;
 	}

@@ -49,10 +49,23 @@
 	</thead>
 
 	@foreach ($records as $v)
-	@can('view', $v)
+		@php ( $canView = $canUpdate = $canDelete = @$policy ? 0 : 1 )
+		@if(@$policy)
+			@can('view', $v)
+				@php ( $canView = 1 )
+			@endcan
+			@can('update', $v)
+				@php ( $canUpdate = 1 )
+			@endcan
+			@can('delete', $v)
+				@php ( $canDelete = 1 )
+			@endcan
+		@endif
+	
+	@if($canView)
     <tr class="{{ (isset($v->e) && !$v->e) ? 'table-warning' : '' }}">
 		<td>
-			@can('update', $v)
+			@if($canUpdate)
 				<a class="text-primary" href="{{ route('admin.'.$table.'.edit', ['id' => $v->id]) }}"
 					title="{{ __('cms::common.edit') }} {{ $v->name }}">
 					{{ __('cms::common.edit') }}</a>
@@ -62,26 +75,24 @@
 						{{-- __('cms::db.'.$table.'-e'.($v->e ? '' : '-off')) --}}
 						{{ __('cms::db.'.$table.'-e'.($v->e ? '-turn-off' : '-turn-on')) }}</a>
 				@endif
-			@endcan
-			@can('delete', $v)
+			@endif
+			@if($canDelete)
 				{{-- confirmDelete --}}
 				<a class="text-danger" href="{{ route('admin.'.$table.'.show', ['id' => $v->id]) }}" 
 					title="{{ __('cms::common.delete') }} {{ $v->name }}">
 					{{ __('cms::common.delete') }}</a>
-			@endcan
-			@if($table=='sections')
-				@can('view', $v)
+			@endif
+			@if($table=='sections' && $canView)
 					<a class="text-secondary" href="{{ route('page', ['url'=>$v->url]) }}" title="{{ __('cms::common.view') }}">{{ __('cms::common.view') }}</a>
-				@endcan
 			@endif
 		@foreach ($columns as $k=>$col)
 			<td>
 			@if($k=='name')
-				@can('update', $v)
+				@if($canUpdate)
 					<a href="{{ route('admin.'.$table.'.edit', ['id' => $v->id]) }}"><b>{{ $v->$k }}</b></a>
 				@else
 					{{ $v->$k }}
-				@endcan
+				@endif
 			@else
 				@if(isset($col['r']))
 					@if(is_array($col['r']))
@@ -96,7 +107,7 @@
 		@endforeach
 	@else
 		<tr><td colspan="{{ 1+sizeof($columns) }}">{{ $v->id }}
-	@endcan
+	@endif
 	@endforeach
 	
 </table>

@@ -2,12 +2,12 @@
 
 namespace vvvkor\cms;
 
-class Lookup extends Entity
+class EntityBasic extends Entity
 {
 	public $timestamps = false;
-	public $incrementing = false;
+	public $incrementing = true;
 	
     //protected $fillable = ['name','url','body','mode'];
-	protected $guarded = [/*'id'*/];
+	protected $guarded = ['id'];
 
 }

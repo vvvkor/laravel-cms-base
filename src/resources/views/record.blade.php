@@ -62,9 +62,15 @@ enctype="multipart/form-data">
 			@if(!isset($links) || $links!==false)
 				<a href="{{ route('admin.'.$table.'.index') }}" class="btn btn-link text-secondary">{{ __('cms::common.cancel') }}</a>
 				@if(@$rec)
-					@can('delete', $rec)
+					@php ( $canDelete = @$policy ? 0 : 1 )
+					@if(@$policy)
+						@can('delete', $rec)
+							@php ( $canDelete = 1 )
+						@endcan
+					@endif
+					@if($canDelete)
 						<a href="{{ route('admin.'.$table.'.show', ['id'=>$rec->id]) }}" class="btn btn-link text-danger">{{ __('cms::common.delete') }}</a>
-					@endcan
+					@endif
 				@endif
 			@endif
 		</label>
