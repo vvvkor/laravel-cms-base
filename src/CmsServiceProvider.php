@@ -118,9 +118,29 @@ class CmsServiceProvider extends ServiceProvider
 		//use contextual binding to inject models
  		foreach(config('cms.adminEntities') as $table){
 			$name = studly_case(str_singular($table));
+			
+			//for controllers:
+			//models from package
 			$this->app->when('vvvkor\cms\Http\Controllers\\'.$name.'Controller')
 				->needs('vvvkor\cms\Entity')
 				->give('vvvkor\cms\\'.$name);
+			//models from app
+			$this->app->when('App\Http\Controllers\\'.$name.'Controller')
+				->needs('vvvkor\cms\Entity')
+				->give('App\\'.$name);
+
+			/*
+			//for policies:
+			//models from package
+			$this->app->when('vvvkor\cms\Policies\\'.$name.'Policy')
+				->needs('vvvkor\cms\Entity')
+				->give('vvvkor\cms\\'.$name);
+			//models from app
+			$this->app->when('App\Policies\\'.$name.'Policy')
+				->needs('vvvkor\cms\Entity')
+				->give('App\\'.$name);
+			*/
+			
 			/*
 			//$this->app->when('vvvkor\cms\Http\Controllers\\'.$name.'Controller')
 			//$this->app->when('vvvkor\cms\\'.$name)

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 //use vvvkor\cms\Section;
 use vvvkor\cms\Facades\Cms;
 
-class SectionPolicy extends EntityPolicy
+class SectionPolicy extends CommonPolicy
 {
 	
     public function view(User $user, Model $model) //Section $model

@@ -61,7 +61,9 @@ class Cms{
 			$x = '\\vvvkor\\cms\\Http\\Controllers\\';
 			$adm = 'admin/';
 			foreach(config('cms.adminEntities') as $table){
-				$ctrl = $x.studly_case(str_singular($table)).'Controller';
+				$ctrl = studly_case(str_singular($table)).'Controller';
+				if(file_exists(app_path('Http/Controllers/').$ctrl.'.php')) $ctrl = '\\App\\Http\\Controllers\\'.$ctrl;
+				else $ctrl = $x.$ctrl;
 				//Route::get($adm.$table.'/{id}/del', $ctrl.'@confirmDelete');//ask to delete -> @show
 				Route::get($adm.$table.'/{id}/unload/{field}', $ctrl.'@unload') //delete uploaded
 					->name('admin.'.$table.'.unload')

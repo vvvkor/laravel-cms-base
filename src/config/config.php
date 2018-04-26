@@ -3,8 +3,8 @@
 return [
 
 	//nav
-	'languages' => ['en'=>'English', 'ru'=>'Русский', 'es'=>'Español'],
-	'adminEntities' => ['sections','users','roles','modes','categories'],
+	'languages' => ['en'=>'English', 'ru'=>'Русский'],
+	'adminEntities' => ['sections','users'/*,'roles','categories'*/],
 
 	//access
 	'adminRole' => 'a', //users.role
