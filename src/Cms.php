@@ -47,10 +47,14 @@ class Cms{
 			
 	}
 	
-	public function excerpt($s/*,$u=null*/){
-		return preg_replace('/([\.\?!]).*$/s','$1',strip_tags($s) /*, -1, $count*/);
-		//if($count && $u!==null) $r .= '...';
-		//return $r;
+	public function translations($path=null){
+		return $this->repo->translations($path);
+	}
+	
+	public function excerpt($s,$add=null){
+		$r = preg_replace('/([\.\?!]).*$/s','$1',strip_tags($s), -1, $count);
+		if($count && $add!==null) $r .= $add;
+		return $r;
 	}
 	
 	public function routes(){

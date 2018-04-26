@@ -30,5 +30,9 @@ class Section extends Entity //Model
 	
 	public function scopeBySeq(Builder $query){
 		return $query->orderBy('seq')->orderBy('id','desc');
-	} 	
+	}
+	
+	public function scopeMatchLangUrl(Builder $query){
+		return $query->whereRaw('length(lang)=2 and (url=lang or substr(url,1,3)=lang||\'/\' or (length(url)<>2 and substr(url,3,1)<>\'/\'))');
+	}
 }

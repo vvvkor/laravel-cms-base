@@ -72,8 +72,32 @@ class SectionRepository {
 	public function subsections($id, $mode='', $per_page=null){
 		if($per_page===null) $per_page = config('cms.perPageSubs',10);
 		return $id
-			? $this->section->where([['parent_id',$id],['mode',$mode]])->paginate($per_page)
+			? $this->section
+				->where([['parent_id',$id],['mode',$mode]])
+				->allowed()
+				->paginate($per_page)
 			: [];
 	}
+	
+	public function translations($path=null){
+		if($path===null) $path = request()->path();
+		if($path=='/') $path = '';
+		$langs = config('cms.languages');
+		if((strlen($path)==2 || substr($path,2,1)=='/') && isset($langs[substr($path,0,2)])){
+			$lang = substr($path,0,2);
+			$path = substr($path,3) ?: '';
+		}
+		else $lang = config('app.locale');
+		//return ['en'=>['url'=>'','name'=>$lang]];
+		return $this->section
+			->where('url','like',$path ? '__/'.$path : '__')
+			->orWhere('url',$path)
+			->allowed()
+			->matchLangUrl()
+			->groupBy('lang')
+			->get()
+			->keyBy('lang');
+	}
+
 	
 }

@@ -87,23 +87,15 @@
 			@endif
 		@foreach ($columns as $k=>$col)
 			<td>
-			@if($k=='name')
-				@if($canUpdate)
-					<a href="{{ route('admin.'.$table.'.edit', ['id' => $v->id]) }}"><b>{{ $v->$k }}</b></a>
-				@else
-					{{ $v->$k }}
-				@endif
-			@else
-				@if(isset($col['r']))
-					@if(is_array($col['r']))
-						{{ __('cms::list.'.$table.'-'.$k.'-'.$v->$k) }}
-					@else
-						<a href="{{ route('admin.'.$col['r'].'.edit', ['id'=>$v->$k]) }}">{{ $v->$k ? cms()->recName($col['r'], $v->$k) : '-' }}</a>
-					@endif
-				@else
-					{{ $v->$k }}
-				@endif
-			@endif
+				@component('cms::cell', [
+					'table' => $table,
+					'column' => $k,
+					'value' => $v->$k,
+					'col' => $col,
+					'row' => $v,
+					'canUpdate' => $canUpdate
+					])
+				@endcomponent
 		@endforeach
 	@else
 		<tr><td colspan="{{ 1+sizeof($columns) }}">{{ $v->id }}
