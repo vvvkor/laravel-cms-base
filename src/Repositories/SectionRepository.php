@@ -3,6 +3,7 @@
 namespace vvvkor\cms\Repositories;
  
 use vvvkor\cms\Section;
+//use Illuminate\Support\Facades\DB;
 
 class SectionRepository {
  
@@ -90,13 +91,18 @@ class SectionRepository {
 		else $lang = config('app.locale');
 		//return ['en'=>['url'=>'','name'=>$lang]];
 		return $this->section
+			//->select(DB::raw('lang, max(id), max(name), max(url)'))
 			->where('url','like',$path ? '__/'.$path : '__')
 			->orWhere('url',$path)
+				// use homepage as fallback if matching url was not found
+				->orWhere('url','')
+				->orWhere('url','like','__')
 			->allowed()
 			->matchLangUrl()
-			->groupBy('lang')
+			->orderByRaw('length(url)')
+			//->groupBy('lang')
 			->get()
-			->keyBy('lang');
+			->keyBy('lang'); //last item for each language will be returned (see also orderBy)
 	}
 
 	
