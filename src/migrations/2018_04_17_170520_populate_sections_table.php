@@ -75,7 +75,7 @@ class PopulateSectionsTable extends Migration
 					'h1' => 'Contacts',
 					'url' => 'contacts',
 					'e' => 1,
-					'lang' => 'ru',
+					'lang' => 'en',
 					'mode' => '',
 					'body' => 'Address, Phone...',
 					'seq' => 20,

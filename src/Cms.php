@@ -29,6 +29,10 @@ class Cms{
 		return $this->repo->nav($lang);
 	}
 	
+	public function homeUrl($lang=''){
+		return $this->repo->homeUrl($lang);
+	}
+	
 	public function section($path, $fld=null, $by='url'){
 		return $this->repo->section($path, $fld, $by);
 	}

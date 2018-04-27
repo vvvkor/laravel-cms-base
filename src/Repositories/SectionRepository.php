@@ -42,6 +42,15 @@ class SectionRepository {
 		return $r;
 	}
 	
+	public function homeUrl($lang=''){
+		return $this->section
+			->whereNull('parent_id')
+			->where([['lang',$lang]])
+			->orderBy('seq')
+			->value('url') // takes first row
+			?: '';
+	}
+	
 	public function section($path, $fld=null, $by='url'){
 		$s = $this->section->where([[$by, ''.$path]])->allowed(1);
 		return $fld===null ? $s->first() : $s->value($fld);
