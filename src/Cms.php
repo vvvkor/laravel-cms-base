@@ -25,8 +25,8 @@ class Cms{
 		return ($user && $user->e && $user->role);
 	}
 	
-	public function nav(){
-		return $this->repo->nav();
+	public function nav($lang=''){
+		return $this->repo->nav($lang);
 	}
 	
 	public function section($path, $fld=null, $by='url'){

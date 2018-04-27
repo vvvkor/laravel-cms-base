@@ -102,6 +102,17 @@ class PopulateSectionsTable extends Migration
 					'body' => 'Private data...',
 					'seq' => 40,
 				],
+				[
+					'parent_id' => null,
+					'name' => 'Главная',
+					'h1' => 'Главная',
+					'url' => 'ru',
+					'e' => 1,
+					'lang' => 'ru',
+					'mode' => '',
+					'body' => 'Привет',
+					'seq' => 10,
+				],
 				/*
 				[
 					'parent_id' => null,

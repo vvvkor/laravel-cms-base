@@ -27,10 +27,18 @@ class SectionRepository {
 	}
 	*/
 	
-	public function nav(){
+	public function nav($lang=''){
 		//return DB::table('sections')->where([['e',1],['mode','']])->orderBy('seq')->get()->keyBy('id');
-		$r = $this->section->where([['mode','']])->allowed()->bySeq()->get()->keyBy('id');
-		foreach($r as $k=>$v) if(isset($v->parent_id) && $v->parent_id)  $r[$v->parent_id]->has_sub = 1;
+		$r = $this->section
+			->where([['mode','']])
+			->where(function($query) use ($lang){
+				if($lang) $query->where('lang',$lang)->orWhere('parent_id','>',0);
+			})
+			->allowed()
+			->bySeq()
+			->get()
+			->keyBy('id');
+		foreach($r as $k=>$v) if(isset($v->parent_id) && $v->parent_id && isset($r[$v->parent_id]))  $r[$v->parent_id]->has_sub = 1;
 		return $r;
 	}
 	

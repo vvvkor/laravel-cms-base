@@ -14,7 +14,7 @@
 
 @php ( $user = isset($user) ? $user : auth()->user() )
 @php ( $lang = isset($lang) ? $lang : app()->getLocale() )
-@php ( $nav = isset($nav) ? $nav : cms()->nav() /* Cms::nav() */ )
+@php ( $nav = isset($nav) ? $nav : cms()->nav($lang) /* Cms::nav() */ )
 
 <!DOCTYPE html>
 <html lang="{{ isset($lang) ? $lang : 'en' }}" style="font-size:120%;">
