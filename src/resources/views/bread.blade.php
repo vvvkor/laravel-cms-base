@@ -6,7 +6,7 @@
 	@php ($cur = $cur->parent_id ? (@$nav[$cur->parent_id] ?: cms()->section($cur->parent_id,null,'id')) : null)
 @endwhile
 
-@if ($bread && (!@$table || ($table=='sections' /*&& $sec->parent_id*/)))
+@if ((sizeof($bread)>1 || @$table) && (!@$table || ($table=='sections' /*&& $sec->parent_id*/)))
 	<nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
 	@if(@$table)
