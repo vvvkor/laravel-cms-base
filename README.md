@@ -35,7 +35,7 @@ Minimalist CMS for Laravel
 In short: configure database then run:
 ```
 $ php artisan make:auth
-$ composer require vvvkor/cms
+$ composer require vvvkor/laravel-cms-base
 $ php artisan migrate
 $ php artisan make:cms
 ```
@@ -54,7 +54,7 @@ $ php artisan make:auth
 ### Require CMS package
 
 ``` bash
-$ composer require vvvkor/cms
+$ composer require vvvkor/laravel-cms-base
 ``` 
 
 ### Add service provider (if auto-discovery is disabled)
@@ -94,7 +94,7 @@ Copy stuff to your app if you want to modify it.
 Views are marked with Bootstrap classes.
 
 ```
-$ php artisan vendor:publish --provider=vvvkor\cms\CmsServiceProvider
+$ php artisan vendor:publish --provider=vvvkor\laravel-cms-base\CmsServiceProvider
 ```
 
 ### Use WYSIWYG CKEditor (optional)
