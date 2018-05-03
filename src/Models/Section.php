@@ -1,11 +1,11 @@
 <?php
 
-namespace vvvkor\cms;
+namespace vvvkor\cms\Models;
 
 //use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use vvvkor\cms\Facades\Cms;
-use vvvkor\cms\Entity;
+//use vvvkor\cms\Models\Entity;
 
 class Section extends Entity //Model
 {

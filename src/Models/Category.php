@@ -1,5 +1,5 @@
 <?php
 
-namespace vvvkor\cms;
+namespace vvvkor\cms\Models;
 
 class Category extends EntityBasic {}

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 //use Illuminate\Support\Facades\Gate;
 //use Illuminate\Support\Facades\Route; 
 use vvvkor\cms\Repositories\SectionRepository as Repo;
-use vvvkor\cms\Section;
+use vvvkor\cms\Models\Section;
 use vvvkor\cms\Cms;
 
 class CmsServiceProvider extends ServiceProvider
@@ -20,7 +20,7 @@ class CmsServiceProvider extends ServiceProvider
      */
     protected $policies = [
 		'App\User' => 'vvvkor\cms\Policies\UserPolicy',
-		'vvvkor\cms\Section' => 'vvvkor\cms\Policies\SectionPolicy',
+		'vvvkor\cms\Models\Section' => 'vvvkor\cms\Policies\SectionPolicy',
 		//'vvvkor\cms\Role' => 'vvvkor\cms\Policies\RolePolicy',
 		//'vvvkor\cms\Mode' => 'vvvkor\cms\Policies\ModePolicy',
 	];
@@ -122,22 +122,22 @@ class CmsServiceProvider extends ServiceProvider
 			//for controllers:
 			//models from package
 			$this->app->when('vvvkor\cms\Http\Controllers\\'.$name.'Controller')
-				->needs('vvvkor\cms\Entity')
-				->give('vvvkor\cms\\'.$name);
+				->needs('vvvkor\cms\Models\Entity')
+				->give('vvvkor\cms\Models\\'.$name);
 			//models from app
 			$this->app->when('App\Http\Controllers\\'.$name.'Controller')
-				->needs('vvvkor\cms\Entity')
-				->give('App\\'.$name);
+				->needs('vvvkor\cms\Models\Entity')
+				->give('App\Models\\'.$name);
 
 			/*
 			//for policies:
 			//models from package
 			$this->app->when('vvvkor\cms\Policies\\'.$name.'Policy')
-				->needs('vvvkor\cms\Entity')
+				->needs('vvvkor\cms\Models\Entity')
 				->give('vvvkor\cms\\'.$name);
 			//models from app
 			$this->app->when('App\Policies\\'.$name.'Policy')
-				->needs('vvvkor\cms\Entity')
+				->needs('vvvkor\cms\Models\Entity')
 				->give('App\\'.$name);
 			*/
 			

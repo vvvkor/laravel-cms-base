@@ -2,7 +2,7 @@
 
 namespace vvvkor\cms\Repositories;
  
-use vvvkor\cms\Section;
+use vvvkor\cms\Models\Section;
 //use Illuminate\Support\Facades\DB;
 
 class SectionRepository {
@@ -18,7 +18,7 @@ class SectionRepository {
 	}
 	
 	public function model(){
-		return 'App\Section';
+		return 'App\Models\Section';
 	}
 	
 	/*

@@ -1,6 +1,6 @@
 <?php
 
-namespace vvvkor\cms;
+namespace vvvkor\cms\Models;
 
 class EntityBasic extends Entity
 {

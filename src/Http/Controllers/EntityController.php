@@ -4,7 +4,7 @@ namespace vvvkor\cms\Http\Controllers;
 
 use Illuminate\Database\DatabaseManager;
 use vvvkor\cms\Repositories\SectionRepository as Repo;
-use vvvkor\cms\Entity;
+use vvvkor\cms\Models\Entity;
 
 
 abstract class EntityController extends CommonController

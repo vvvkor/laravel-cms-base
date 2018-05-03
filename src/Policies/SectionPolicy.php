@@ -4,8 +4,8 @@ namespace vvvkor\cms\Policies;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
-//use vvvkor\cms\Entity;
-//use vvvkor\cms\Section;
+//use vvvkor\cms\Models\Entity;
+//use vvvkor\cms\Models\Section;
 use vvvkor\cms\Facades\Cms;
 
 class SectionPolicy extends CommonPolicy

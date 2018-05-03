@@ -4,7 +4,7 @@ namespace vvvkor\cms\Http\Controllers;
 
 //use Illuminate\Database\DatabaseManager;
 //use vvvkor\cms\Repositories\SectionRepository as Repo;
-//use vvvkor\cms\Section as Section;
+//use vvvkor\cms\Models\Section as Section;
 
 class SectionController extends EntityController
 {
@@ -82,7 +82,7 @@ class SectionController extends EntityController
 					'aside' => 1,
 					'tag' => $mode,
 					'title' => __('cms::list.sections-mode-'.$mode),
-					//'model' => 'vvvkor\cms\Section',
+					//'model' => 'vvvkor\cms\Models\Section',
 					'table' => 'sections',
 					'columns' => $this->tableFields(1),
 					'records' => $d,
