@@ -1,12 +1,14 @@
 {
-    "name": "vvvkor/cms",
+    "name": "vvvkor/laravel-cms-base",
     "type": "library",
     "description": "Minimalist CMS for Laravel",
     "keywords": [
         "vvvkor",
-        "cms"
+        "cms",
+        "laravel",
+		"minimalist"
     ],
-    "homepage": "https://github.com/vvvkor/cms",
+    "homepage": "https://github.com/vvvkor/laravel-cms-base",
     "license": "MIT",
     "authors": [
         {
