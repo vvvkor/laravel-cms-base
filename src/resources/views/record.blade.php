@@ -6,8 +6,12 @@
 	<h2 class="my-3">
 	<a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table.'1') }}</a>
 	@if(isset($rec))
-		<span class="text-secondary">#{{ $rec->id }}</span>
-		<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ (isset($rec->e) && !$rec->e) ? 'bg-warning' : '' }}">{{ strlen($rec->name)>0 ? $rec->name : '-' }}</a>
+		&mdash;
+		<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ (isset($rec->e) && !$rec->e) ? 'bg-warning' : '' }}">#{{ $rec->id }}</a>
+		@if(strlen($rec->name)>0)
+			&mdash;
+			<span class="text-secondary">{{ $rec->name }}</span>
+		@endif
 		@if($table=='sections')
 			<a href="{{ route('page', ['url'=>$rec->url]) }}" class="text-secondary" title="{{ __('cms::common.view') }}">&rarr;</a>
 		@endif
