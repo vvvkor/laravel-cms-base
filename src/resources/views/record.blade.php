@@ -41,6 +41,7 @@ enctype="multipart/form-data">
 			'name' => $k,
 			'label' => isset($f['l']) ? $f['l'] : $k,
 			'type' => $type,
+			'decimals' => isset($f['d']) ? $f['d'] : null,
 			'value' => isset($rec->$k) ? $rec->$k : '',
 			'empty' => isset($f['u']) ? $f['u'] : false,
 			'list' => isset($f['r'])

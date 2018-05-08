@@ -20,8 +20,8 @@ class SectionController extends EntityController
 	protected $newRecFields = [];
 	
 	protected $fields = [
-		//v:validate='', :save=true, t:type=text, r:relation|[], u:nullable,
-		//x:skip_in_query
+		//v:validate='', t:type=text, r:relation|[], u:nullable,
+		//x:skip_in_query, s:number_step, a:auto_value_if_absent_in_request
 		'id' => [
 			],
 		'url' => [

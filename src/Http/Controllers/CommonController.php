@@ -52,18 +52,25 @@ abstract class CommonController extends PageController
 			//prepare fields
 			foreach($this->fields as $k=>$v){
 				$this->fields[$k]['l'] = __('cms::db.'.$this->entity.'-'.$k);
-				if(isset($this->fields[$k]['r']) && is_array($this->fields[$k]['r'])){
-					/*
-					$this->fields[$k]['r'] = array_map(
-						function($v){ return __('cms::list.'.$v); },
-						$this->fields[$k]['r']
-					);
-					*/
-					$r = array();
-					foreach($this->fields[$k]['r'] as $q){
-						$r[$q] = __('cms::list.'.$this->entity.'-'.$k.'-'.$q);
+				if(isset($v['r'])){
+					if(is_array($v['r'])){
+						/*
+						$this->fields[$k]['r'] = array_map(
+							function($v){ return __('cms::list.'.$v); },
+							$this->fields[$k]['r']
+						);
+						*/
+						$r = array();
+						foreach($v['r'] as $q){
+							$r[$q] = __('cms::list.'.$this->entity.'-'.$k.'-'.$q);
+						}
+						$this->fields[$k]['r'] = $r;
 					}
-					$this->fields[$k]['r'] = $r;
+					else{
+						if(!isset($this->lookups[$v['r']])){
+							$this->lookups[$v['r']] = 'name';
+						}
+					}
 				}
 			}
 			//session vars
@@ -367,16 +374,17 @@ abstract class CommonController extends PageController
 		$skip = [];
 		$ff = $this->formFields($create);
 		foreach($ff as $k=>$f) if(!@$f['x']){
-			$val = (!isset($f['s']) || $f['s']===true)
+			$val = (!isset($f['a']) || $f['a']===true)
 				? $request->$k
-				: (($f['s']===false)
+				: (($f['a']===false)
 					? $request->$k ? 1 : 0
-					: $f['s']
+					: $f['a']
 					);
 			$typ = (isset($f['t']) && $f['t']) ? $f['t'] : 'text';
 			if($typ){
 				if(!$val){
 					if($typ=='select' && isset($f['r'])) $val = is_array($f['r']) ? '' : null;
+					else if($typ=='number') $val = @$f['u'] ? null : 0;
 					else if($typ=='text') $val = '';
 					else if($typ=='textarea') $val = '';
 					else if($typ=='checkbox') $val = 0;
