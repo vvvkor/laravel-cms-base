@@ -6,9 +6,9 @@ return [
 	'sections-mode-a' => 'Статья',
 	'sections-mode-f' => 'Файл',
 	
-	'users-role-' => 'Гость',
-	'users-role-r' => 'Читатель',
-	'users-role-a' => 'Администратор',
+	'users-role_id-' => 'Гость',
+	'users-role_id-free' => 'Читатель',
+	'users-role_id-admin' => 'Администратор',
 	
 	'view-table' => 'Таблица',
 	'view-list' => 'Список',

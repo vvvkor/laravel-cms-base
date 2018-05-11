@@ -15,7 +15,7 @@
 				|| (!$sec && $v->url && strpos(request()->path(), $v->url)===0)
 			) ? 'active' : ''
 		)
-		@php ( $class = ($v->e || $active ? '' : 'text-warning ') )
+		@php ( $class = ($v->enabled || $active ? '' : 'text-warning ') )
 
 			@if (@$v->has_sub)
 				<a href="#" class="nav-link dropdown-toggle {{ $class }} {{ $active }}" data-toggle="dropdown">{{ $nm }}</a>

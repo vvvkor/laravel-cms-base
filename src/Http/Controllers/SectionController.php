@@ -14,14 +14,14 @@ class SectionController extends EntityController
 	protected $uniques = ['url'];
 	protected $lookups = ['sections'=>'name','users'=>'name'];
 	
-	protected $tabFields  = ['id','url','parent_id','redirect_id','name','h1','e','mode','lang','fnm','seq','pub_dt','owner_id'];
-	protected $subTabFields  = ['id','url','name','e'];
-	protected $recFields    = ['url','parent_id','redirect_id','name','h1','e','mode','lang','fnm','body','seq','pub_dt','owner_id'];
+	protected $tabFields  = ['id','url','parent_id','redirect_id','name','h1','enabled','mode','lang','fnm','seq','pub_dt','owner_id'];
+	protected $subTabFields  = ['id','url','name','enabled'];
+	protected $recFields    = ['url','parent_id','redirect_id','name','h1','enabled','mode','lang','fnm','body','seq','pub_dt','owner_id'];
 	protected $newRecFields = [];
 	
 	protected $fields = [
-		//v:validate='', t:type=text, r:relation|[], u:nullable,
-		//x:skip_in_query, s:number_step, a:auto_value_if_absent_in_request
+		//v:validate='', t:type=text, r:relation|[], n:nullable,
+		//x:skip_in_query, d:number_decimals, a:auto_value_if_absent_in_request
 		'id' => [
 			],
 		'url' => [
@@ -31,13 +31,13 @@ class SectionController extends EntityController
 		'parent_id' => [
 			't' => 'select',
 			'r' => 'sections',
-			'u' => true,
+			'n' => true,
 			],
 		'name' => [
 			],
 		'h1' => [
 			],
-		'e' => [
+		'enabled' => [
 			't' => 'checkbox'
 			],
 		'fnm' => [
@@ -49,7 +49,7 @@ class SectionController extends EntityController
 		'redirect_id' => [
 			't' => 'select',
 			'r' => 'sections',
-			'u' => true,
+			'n' => true,
 			],
 		'mode' => [
 			//'v' => 'max:1',
@@ -68,7 +68,7 @@ class SectionController extends EntityController
 		'owner_id' => [
 			't' => 'select',
 			'r' => 'users',
-			'u' => true,
+			'n' => true,
 			],
 		];
 	

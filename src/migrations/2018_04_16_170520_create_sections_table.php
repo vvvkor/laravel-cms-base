@@ -20,7 +20,7 @@ class CreateSectionsTable extends Migration
 				$table->string('name',255)->default('');
 				$table->string('h1',255)->default('');
 				$table->string('url',100)->default('')->unique();
-				$table->tinyInteger('e')->default(0);
+				$table->tinyInteger('enabled')->default(0);
 				$table->mediumText('body');
 				$table->integer('redirect_id')->unsigned()->nullable();
 				$table->string('mode',1)->default('');
@@ -38,9 +38,9 @@ class CreateSectionsTable extends Migration
 				$table->foreign('owner_id')->references('id')->on('users');
 		});
         Schema::table('users', function (Blueprint $table) {
-				$table->tinyInteger('e')->default(0);
+				$table->tinyInteger('enabled')->default(0);
 				$table->string('lang',2)->default('');
-				$table->string('role',1)->default('');
+				$table->string('role_id',8)->default('');
 		});
     }
 
@@ -52,13 +52,13 @@ class CreateSectionsTable extends Migration
     public function down()
     {
 		Schema::table('users', function (Blueprint $table) {
-			$table->dropColumn('e');
+			$table->dropColumn('enabled');
 		});
 		Schema::table('users', function (Blueprint $table) {
 			$table->dropColumn('lang');
 		});
 		Schema::table('users', function (Blueprint $table) {
-			$table->dropColumn('role');
+			$table->dropColumn('role_id');
 		});
         Schema::dropIfExists('sections');
     }

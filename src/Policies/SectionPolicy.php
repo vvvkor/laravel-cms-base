@@ -13,7 +13,7 @@ class SectionPolicy extends CommonPolicy
 	
     public function view(User $user, Model $model) //Section $model
     {
-		return $model->e
+		return $model->enabled
 			? true
 			: Cms::isReader();
     }

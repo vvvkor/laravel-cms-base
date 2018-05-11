@@ -63,17 +63,17 @@
 		@endif
 	
 	@if($canView)
-    <tr class="{{ (isset($v->e) && !$v->e) ? 'table-warning' : '' }}">
+    <tr class="{{ (isset($v->enabled) && !$v->enabled) ? 'table-warning' : '' }}">
 		<td>
 			@if($canUpdate)
 				<a class="text-primary" href="{{ route('admin.'.$table.'.edit', ['id' => $v->id]) }}"
 					title="{{ __('cms::common.edit') }} {{ $v->name }}">
 					{{ __('cms::common.edit') }}</a>
-				@if(isset($v->e))
-					<a class="text-info" href="{{ route('admin.'.$table.'.turn', ['id' => $v->id, 'do' => $v->e ? 'off' : 'on']) }}"
-						title="{{ __('cms::db.'.$table.'-e'.($v->e ? '-turn-off' : '-turn-on')) }}">
-						{{-- __('cms::db.'.$table.'-e'.($v->e ? '' : '-off')) --}}
-						{{ __('cms::db.'.$table.'-e'.($v->e ? '-turn-off' : '-turn-on')) }}</a>
+				@if(isset($v->enabled))
+					<a class="text-info" href="{{ route('admin.'.$table.'.turn', ['id' => $v->id, 'do' => $v->enabled ? 'off' : 'on']) }}"
+						title="{{ __('cms::db.'.$table.'-enabled'.($v->enabled ? '-turn-off' : '-turn-on')) }}">
+						{{-- __('cms::db.'.$table.'-enabled'.($v->enabled ? '' : '-off')) --}}
+						{{ __('cms::db.'.$table.'-enabled'.($v->enabled ? '-turn-off' : '-turn-on')) }}</a>
 				@endif
 			@endif
 			@if($canDelete)

@@ -56,7 +56,7 @@ class PageController extends Controller
 	
 	private function checkUserEnabled(){
 		$user = auth()->user();
-		if($user && !$user->e){
+		if($user && !$user->enabled){
 			$this->flash('message-danger', 'auth-locked');
 			auth()->logout();
 		}

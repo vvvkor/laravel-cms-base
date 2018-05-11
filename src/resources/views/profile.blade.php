@@ -2,7 +2,7 @@
 	<a class="-btn -btn-link">
 	{{ __('cms::common.hello') }}, 
 	<a href="{{ route('profile.edit', ['id'=>$user->id]) }}"><b>{{ $user->name }}</b></a>
-	({{ __('cms::list.users-role-'.$user->role) }})
+	({{ __('cms::list.users-role_id-'.$user->role_id) }})
 	</a>
 	
 	@component('cms::nav-admin')

@@ -6,9 +6,9 @@ return [
 	'sections-mode-a	' => 'Article',
 	'sections-mode-f' => 'File',
 
-	'users-role-' => 'Guest',
-	'users-role-r' => 'Reader',
-	'users-role-a' => 'Administrator',
+	'users-role_id-' => 'Guest',
+	'users-role_id-free' => 'Reader',
+	'users-role_id-admin' => 'Administrator',
 	
 	'view-table' => 'Table',
 	'view-list' => 'List',

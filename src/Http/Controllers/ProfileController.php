@@ -12,8 +12,8 @@ class ProfileController extends UserController
     
 	protected $entity = 'users';
 	
-	protected $tabFields  = ['id','name','email','lang','e','role'];
-	protected $subTabFields  = ['id','name','email','e'];
+	protected $tabFields  = ['id','name','email','lang','enabled','role_id'];
+	protected $subTabFields  = ['id','name','email','enabled'];
 	protected $recFields    = ['name','lang'];
 
 	public function index(Request $request){

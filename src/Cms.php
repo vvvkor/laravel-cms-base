@@ -17,12 +17,12 @@ class Cms{
 	
 	public function isAdmin(){
 		$user = auth()->user();
-		return ($user && $user->e && $user->role==config('cms.adminRole','admin'));
+		return ($user && $user->enabled && $user->role_id==config('cms.adminRole','admin'));
 	}
 	
 	public function isReader(){
 		$user = auth()->user();
-		return ($user && $user->e && $user->role);
+		return ($user && $user->enabled && $user->role_id);
 	}
 	
 	public function nav($lang=''){

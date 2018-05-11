@@ -7,7 +7,7 @@
 	<a href="{{ route('admin.'.$table.'.index') }}">{{ __('cms::db.'.$table.'1') }}</a>
 	@if(isset($rec))
 		&mdash;
-		<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ (isset($rec->e) && !$rec->e) ? 'bg-warning' : '' }}">#{{ $rec->id }}</a>
+		<a href="{{ route('admin.'.$table.'.edit',$rec->id) }}" class="{{ (isset($rec->enabled) && !$rec->enabled) ? 'bg-warning' : '' }}">#{{ $rec->id }}</a>
 		@if(strlen($rec->name)>0)
 			&mdash;
 			<span class="text-secondary">{{ $rec->name }}</span>
@@ -47,7 +47,7 @@ enctype="multipart/form-data">
 			'type' => $type,
 			'decimals' => isset($f['d']) ? $f['d'] : null,
 			'value' => isset($rec->$k) ? $rec->$k : '',
-			'empty' => isset($f['u']) ? $f['u'] : false,
+			'nullable' => isset($f['n']) ? $f['n'] : false,
 			'list' => isset($f['r'])
 				? (is_array($f['r']) ? $f['r'] : $list[$f['r']])
 				: [],

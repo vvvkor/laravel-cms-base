@@ -16,7 +16,7 @@ class Section extends Entity //Model
     {
 		$user = auth()->user();
 		if(!Cms::isReader()){
-			$query->where('e',1);
+			$query->where('enabled',1);
 		}
 		if(!Cms::isAdmin()){
 			$query->where(function($q){

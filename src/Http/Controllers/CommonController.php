@@ -247,8 +247,8 @@ abstract class CommonController extends PageController
 		$rec = $this->model->findOrFail($id);
 		if($this->policy) $this->authorize('update', $rec);
 		try{
-			if($do=='on') $rec->e = 1;
-			else if($do=='off') $rec->e = 0;
+			if($do=='on') $rec->enabled = 1;
+			else if($do=='off') $rec->enabled = 0;
 			else return null;
 			$rec->save();
 			$this->flash('message-success','ok-save');
@@ -384,7 +384,7 @@ abstract class CommonController extends PageController
 			if($typ){
 				if(!$val){
 					if($typ=='select' && isset($f['r'])) $val = is_array($f['r']) ? '' : null;
-					else if($typ=='number') $val = @$f['u'] ? null : 0;
+					else if($typ=='number') $val = @$f['n'] ? null : 0;
 					else if($typ=='text') $val = '';
 					else if($typ=='textarea') $val = '';
 					else if($typ=='checkbox') $val = 0;

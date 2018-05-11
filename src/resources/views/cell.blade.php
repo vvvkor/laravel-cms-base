@@ -12,9 +12,9 @@
 			<a href="{{ route('admin.'.$col['r'].'.edit', ['id'=>$value]) }}">{{ $value ? cms()->recName($col['r'], $value) : '-' }}</a>
 		@endif
 	@elseif(@$col['t']=='date')
-			{{ date('d.m.Y', strtotime($value)) }}
+			{{ $value ? date('d.m.Y', strtotime($value)) : '-' }}
 	@elseif(@$col['t']=='datetime-local')
-			{{ date('d.m.Y H:i:s', strtotime($value)) }}
+			{{ $value ? date('d.m.Y H:i:s', strtotime($value)) : '-' }}
 	@elseif(@$col['t']=='textarea')
 		{!! cms()->excerpt($value,'...') !!}
 	@elseif(@$col['t']=='password')

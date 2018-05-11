@@ -28,7 +28,7 @@ class SectionRepository {
 	*/
 	
 	public function nav($lang=''){
-		//return DB::table('sections')->where([['e',1],['mode','']])->orderBy('seq')->get()->keyBy('id');
+		//return DB::table('sections')->where([['enabled',1],['mode','']])->orderBy('seq')->get()->keyBy('id');
 		$r = $this->section
 			->where([['mode','']])
 			->where(function($query) use ($lang){

@@ -13,14 +13,14 @@ class UserController extends CommonController
 	protected $policy = true;
 	protected $uniques = ['email'];
 	
-	protected $tabFields  = ['id','name','email','lang','e','role'];
-	protected $subTabFields  = ['id','name','email','e'];
-	protected $recFields    = ['name','email','lang','e','role'];
-	protected $newRecFields = ['name','email','lang','e','role','password','password_confirmation'];
+	protected $tabFields  = ['id','name','email','lang','enabled','role_id'];
+	protected $subTabFields  = ['id','name','email','enabled'];
+	protected $recFields    = ['name','email','lang','enabled','role_id'];
+	protected $newRecFields = ['name','email','lang','enabled','role_id','password','password_confirmation'];
 	
 	protected $fields = [
-		//v:validate='', :save=true, t:type=text, r:relation|[], u:nullable,
-		//x:skip_in_query
+		//v:validate='', t:type=text, r:relation|[], n:nullable,
+		//x:skip_in_query, d:number_decimals, a:auto_value_if_absent_in_request
 		'id' => [
 			],
 		'name' => [
@@ -42,12 +42,12 @@ class UserController extends CommonController
 		'lang' => [
 			'v' => 'max:2',
 			],
-		'e' => [
+		'enabled' => [
 			't' => 'checkbox',
 			],
-		'role' => [
+		'role_id' => [
 			't' => 'select',
-			'r' => array('','r','a'),
+			'r' => array('','free','admin'),
 			],
 		];
 	

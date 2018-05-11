@@ -7,7 +7,7 @@ return [
 	'adminEntities' => ['sections','users'/*,'roles','categories'*/],
 
 	//access
-	'adminRole' => 'a', //users.role
+	'adminRole' => 'admin', //users.role_id
 	'page403' => false, // false:abort(403); true:view('cms::errors.403')
 
 	//cache
