@@ -10,8 +10,13 @@ use vvvkor\cms\Facades\Cms;
 class Section extends Entity //Model
 {
     //protected $fillable = ['name','url','body','mode'];
-	protected $guarded = ['id']; 
+	protected $guarded = ['id'];
 
+	public function sections()
+    {
+        return $this->hasMany('vvvkor\cms\Models\Section', 'parent_id');
+    }		
+	
 	public function scopeAllowed(Builder $query, $hidden=0)
     {
 		$user = auth()->user();

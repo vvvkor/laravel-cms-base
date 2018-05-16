@@ -12,6 +12,7 @@ class SectionController extends EntityController
 	//protected $entity = 'sections';
 	protected $policy = true;
 	protected $uniques = ['url'];
+	protected $children = [['sections','vvvkor\cms\Http\Controllers\SectionController']];
 	protected $lookups = ['sections'=>'name','users'=>'name'];
 	
 	protected $tabFields  = ['id','url','parent_id','redirect_id','name','h1','enabled','mode','lang','fnm','seq','pub_dt','owner_id'];
@@ -72,11 +73,12 @@ class SectionController extends EntityController
 			],
 		];
 	
-	public function aside($rec){
+	public function aside($record){
+		//parent::aside($record);
 		$modes = ['','a','f'];
 		$r = '';
 		foreach($modes as $mode){
-			$d = $this->repo->subsections($rec->id, $mode);
+			$d = $this->repo->subsections($record->id, $mode);
 			if($d && $d->count()){
 				$r .= view('cms::table', [
 					'aside' => 1,
@@ -86,7 +88,7 @@ class SectionController extends EntityController
 					'table' => 'sections',
 					'columns' => $this->tableFields(1),
 					'records' => $d,
-					'root' => $rec->id, //for tree
+					'root' => $record->id, //for tree
 					]);
 			}
 		}

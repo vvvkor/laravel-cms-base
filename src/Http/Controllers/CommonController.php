@@ -24,6 +24,7 @@ abstract class CommonController extends PageController
 	protected $nmf = 'name';
 	protected $uniques = [];
 	protected $lookups = [];
+	protected $children = [];
 	protected $fields = [];
 	protected $tabFields  = [];
 	protected $subTabFields  = [];
@@ -303,8 +304,8 @@ abstract class CommonController extends PageController
 		return ['list'=>$r];
 	}
 	
-	protected function aside($rec){
-		return '';
+	protected function aside($record){
+		return implode(' ', $this->subTables($record));
 	}
 	
 	function fuid($fnm){
@@ -428,6 +429,36 @@ abstract class CommonController extends PageController
 			}
 		}
 		return false;
+	}
+
+	protected function subRecords($record, $relationName, $controllerName=null){
+		if(!$controllerName) $controllerName = studly_case(str_singular($relationName)).'Controller';
+		if(!strstr($controllerName,'\\')) $controllerName = 'App\Http\Controllers\\'.$controllerName;
+		$subrecs = $record->$relationName()->paginate(config('cms.perPageSubs',10), ['*'], 'page-'.$relationName);
+		$c = resolve($controllerName);
+		$c->prepareFields();//fix: should be called automatically from constructor
+		$entity = $c->getEntity();
+		return view('cms::table', [
+			'aside' => 1,
+			'tag' => $relationName,
+			'title' => __('cms::db.'.$entity), 
+			'columns' => $c->tableFields(1),
+			'records' => $subrecs,
+			'table' => $entity,
+			'policy' => false,//$this->policy,
+			//'nmf' => 'name', // hints
+			]
+			);
+	}
+	
+	protected function subTables($record){
+		$r = array();
+		foreach($this->children as $c){
+			$relation = is_array($c) ? @$c[0] : $c;
+			$controller = is_array($c) ? @$c[1] : null;
+			$r[$relation] = $this->subRecords($record, $relation, $controller);
+		}
+		return $r;
 	}
 	
 }

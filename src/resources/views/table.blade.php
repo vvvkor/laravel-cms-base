@@ -105,7 +105,7 @@
 </table>
 </div>
 	
-@if($table=='sections')
+@if( method_exists($records, 'links') )
 	<div class="my-3">
 		{{ $records->links() }}
 	</div>
