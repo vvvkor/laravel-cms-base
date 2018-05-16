@@ -42,6 +42,7 @@ abstract class CommonController extends PageController
 		$this->db = $db;
 		$this->modelClass = get_class($model);//for controllers
         //$this->authorizeResource($this->model);
+		//$this->prepareFields();
 		
 		//$this->share();
 		$this->middleware(function ($request, $next) {
@@ -49,30 +50,7 @@ abstract class CommonController extends PageController
 			//redirect?
             $redir = $this->prepare($this->repo->section(request()->path()), true);
 			if($redir) return $redir;
-			//prepare fields
-			foreach($this->fields as $k=>$v){
-				$this->fields[$k]['l'] = __('cms::db.'.$this->entity.'-'.$k);
-				if(isset($v['r'])){
-					if(is_array($v['r'])){
-						/*
-						$this->fields[$k]['r'] = array_map(
-							function($v){ return __('cms::list.'.$v); },
-							$this->fields[$k]['r']
-						);
-						*/
-						$r = array();
-						foreach($v['r'] as $q){
-							$r[$q] = __('cms::list.'.$this->entity.'-'.$k.'-'.$q);
-						}
-						$this->fields[$k]['r'] = $r;
-					}
-					else{
-						if(!isset($this->lookups[$v['r']])){
-							$this->lookups[$v['r']] = 'name';
-						}
-					}
-				}
-			}
+			$this->prepareFields();
 			//session vars
 			if(isset($request->view)){
 				$key = 'view-'.$this->entity.($request->tag ? '-'.$request->tag : '');
@@ -82,6 +60,26 @@ abstract class CommonController extends PageController
         });
 
 	}
+
+	public function prepareFields(){
+		foreach($this->fields as $k=>$v){
+			$this->fields[$k]['l'] = __('cms::db.'.$this->entity.'-'.$k);
+			if(isset($v['r'])){
+				if(is_array($v['r'])){
+					$r = array();
+					foreach($v['r'] as $q){
+						$r[$q] = __('cms::list.'.$this->entity.'-'.$k.'-'.$q);
+					}
+					$this->fields[$k]['r'] = $r;
+				}
+				else{
+					if(!isset($this->lookups[$v['r']])){
+						$this->lookups[$v['r']] = 'name';
+					}
+				}
+			}
+		}
+	}
 	
 	protected function share(){
 		parent::share();
@@ -89,6 +87,10 @@ abstract class CommonController extends PageController
 			? auth()->user()->can('create',$this->modelClass)
 			: true;
 		View::share('canCreate', $cc);
+	}
+	
+	public function getEntity(){
+		return $this->entity;
 	}
 	
 	//actions

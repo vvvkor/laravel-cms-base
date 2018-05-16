@@ -105,7 +105,9 @@
 </table>
 </div>
 	
-<div class="my-3">
-	{{ $records->links() }}
-</div>
+@if($table=='sections')
+	<div class="my-3">
+		{{ $records->links() }}
+	</div>
+@endif
 @endif
