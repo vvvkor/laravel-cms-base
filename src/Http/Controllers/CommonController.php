@@ -137,19 +137,16 @@ abstract class CommonController extends PageController
 	}
 	
 	protected function prepareFilters(Request $request, $table, $tag=''){
-		if($request->filter){
+		if($request->field){
 			$filters = [];
 			if(!@$request->reset){
-				foreach($request->filter as $k=>$v){
-					$f = @$request->field[$k];
+				foreach($request->field as $k=>$v) if($v){
 					$op = @$request->oper[$k];
-					if($f){
-						$filters[] = [
-							$f,
-							$op ?: '=',
-							$v
-							];
-					}
+					$filters[] = [
+						$v,
+						$op ?: '=',
+						@$request->filter[$k]
+						];
 				}
 			}
 			$key = $this->filterKey($request->table, $request->tag);
@@ -159,23 +156,43 @@ abstract class CommonController extends PageController
 		return $request->session()->get($key,[]);
 	}
 	
+	protected function dbFilters($filters,$columns=[]){
+		foreach($filters as $k=>$v){
+			$fld = $v[0];
+			$op = $v[1];
+			$val = $v[2];
+			
+			if(@$columns[$fld]['t']=='checkbox') $val = $val ? 1 : 0;
+			else if(strlen($val)<1) $val = '';
+			
+			if(strstr($op,'like')){
+				$val = strstr($val,'*')
+					? str_replace('*','%',$val)
+					: '%'.$val.'%';
+			}
+			$filters[$k][2] = $val;
+		}
+		return $filters;
+	}
+	
 	//actions
 	
     public function index(Request $request)
     {
 		$filters = $this->prepareFilters($request, $this->entity, '');
 		$orders = $this->prepareOrders($request, $this->entity, '');
+		$columns = $this->tableFields(0);
 		if($this->policy) $this->authorize('index', $this->modelClass);
 		//$cols = $this->db->getSchemaBuilder()->getColumnListing($this->entity);
-		
-		$d = $this->model->where($filters);
+//print_r($filters);		
+		$d = $this->model->where($this->dbFilters($filters, $columns));
 			foreach($orders as $fld=>$desc) $d->orderBy($fld, $desc ? 'desc' : 'asc');
 			$d = $d->paginate(config('cms.perPageAdmin',20));
 			
 		return view('cms::page-table', [
 			'title' => __('cms::db.'.$this->entity),
 			//'columns' => $cols,
-			'columns' => $this->tableFields(0),
+			'columns' => $columns,
 			'records' => $d,
 			'filters' => $filters,
 			'orders' => $orders,

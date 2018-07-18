@@ -49,11 +49,17 @@
 			@endcan
 			<!--input type="search" name="_q" size="5"-->
 		@foreach ($columns as $k=>$col)
-		<th>{{ $col['l'] }}
+		<th><span class="{{ @array_pluck($filters,2,0)[$k] ? 'bg-warning' : '' }}">{{ $col['l'] }}</span>
 			@php( $n = array_search($k, array_keys($orders)) )
 			@php( $n = ($n===false) ? '' : $n+1 )
-			<a href="?order={{ $k }}" class="{{ isset($orders[$k]) && !$orders[$k] ? 'bg-warning' : '' }}">&uarr;</a>
-			<a href="?order={{ $k }}&desc=1" class="{{ isset($orders[$k]) && $orders[$k]  ? 'bg-warning' : '' }}">&darr;</a>{{ $n }}
+			<br>
+			<nobr>
+				<a href="?order={{ $k }}" class="{{ isset($orders[$k]) && !$orders[$k] ? 'bg-warning' : '' }}">&uarr;</a>
+				<a href="?order={{ $k }}&desc=1" class="{{ isset($orders[$k]) && $orders[$k]  ? 'bg-warning' : '' }}">&darr;</a>
+				@if($n)
+					<span class="text-secondary">{{ $n }}</span>
+				@endif
+			</nobr>
 		@endforeach
 	</thead>
 
