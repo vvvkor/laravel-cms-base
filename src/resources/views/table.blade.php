@@ -32,6 +32,11 @@
 	@endcomponent
 @else
 <div class="table-responsive my-3">
+
+	@if(!@$aside)
+		@include('cms::table-filter')
+	@endif
+
 <table class="table table-bordered -table-striped -table-hover">
 	<thead class="thead-light">
 	<tr class="bg">
@@ -43,8 +48,12 @@
 				</a>
 			@endcan
 			<!--input type="search" name="_q" size="5"-->
-		@foreach ($columns as $col)
+		@foreach ($columns as $k=>$col)
 		<th>{{ $col['l'] }}
+			@php( $n = array_search($k, array_keys($orders)) )
+			@php( $n = ($n===false) ? '' : $n+1 )
+			<a href="?order={{ $k }}" class="{{ isset($orders[$k]) && !$orders[$k] ? 'bg-warning' : '' }}">&uarr;</a>
+			<a href="?order={{ $k }}&desc=1" class="{{ isset($orders[$k]) && $orders[$k]  ? 'bg-warning' : '' }}">&darr;</a>{{ $n }}
 		@endforeach
 	</thead>
 

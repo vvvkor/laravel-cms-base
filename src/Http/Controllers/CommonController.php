@@ -94,18 +94,91 @@ abstract class CommonController extends PageController
 		return $this->entity;
 	}
 	
+	//order
+	
+	/*
+	protected function arraySingleKey($d,$key){
+		$r = [];
+		$set = [];
+		foreach($d as $k=>$v){
+			if(!isset($set[$v[$key]])){
+				$set[$v[$key]] = 1;
+				$r[$k] = $v;
+			}
+		}
+		return $r;
+	}
+	*/
+	
+	protected function orderKey($table, $tag=''){
+		return 'order-'.$table.($tag ? '-'.$tag : '');
+	}
+	
+	protected function prepareOrders(Request $request, $table, $tag=''){
+		if($request->order){
+			$key = $this->orderKey(@$request->table ?: $table, @$request->tag ?: $tag);
+			$orders = $request->session()->get($key,[]);
+			if(@$request->order){
+				unset($orders[$request->order]);
+				$orders = array_merge([$request->order => @$request->desc ? 1 : 0], $orders);
+			}
+			//$orders = $this->arraySingleKey($orders,0);
+			$orders = array_slice($orders, 0, 3);
+			$request->session()->put($key, $orders);
+		}
+		$key = $this->orderKey($table, $tag);
+		return $request->session()->get($key, [['id'=>0]]);
+	}
+	
+	//filter
+	
+	protected function filterKey($table, $tag=''){
+		return 'filter-'.$table.($tag ? '-'.$tag : '');
+	}
+	
+	protected function prepareFilters(Request $request, $table, $tag=''){
+		if($request->filter){
+			$filters = [];
+			if(!@$request->reset){
+				foreach($request->filter as $k=>$v){
+					$f = @$request->field[$k];
+					$op = @$request->oper[$k];
+					if($f){
+						$filters[] = [
+							$f,
+							$op ?: '=',
+							$v
+							];
+					}
+				}
+			}
+			$key = $this->filterKey($request->table, $request->tag);
+			$request->session()->put($key, $filters);
+		}
+		$key = $this->filterKey($table, $tag);
+		return $request->session()->get($key,[]);
+	}
+	
 	//actions
 	
     public function index(Request $request)
     {
+		$filters = $this->prepareFilters($request, $this->entity, '');
+		$orders = $this->prepareOrders($request, $this->entity, '');
 		if($this->policy) $this->authorize('index', $this->modelClass);
 		//$cols = $this->db->getSchemaBuilder()->getColumnListing($this->entity);
-		$d = $this->model->paginate(config('cms.perPageAdmin',20));
+		
+		$d = $this->model->where($filters);
+			foreach($orders as $fld=>$desc) $d->orderBy($fld, $desc ? 'desc' : 'asc');
+			$d = $d->paginate(config('cms.perPageAdmin',20));
+			
 		return view('cms::page-table', [
 			'title' => __('cms::db.'.$this->entity),
 			//'columns' => $cols,
 			'columns' => $this->tableFields(0),
 			'records' => $d,
+			'filters' => $filters,
+			'orders' => $orders,
 			] + 
 			$this->data()
 			);
@@ -440,6 +513,8 @@ abstract class CommonController extends PageController
 		$entity = $c->getEntity();
 		return view('cms::table', [
 			'aside' => 1,
+				'parent_table' => $record->getTable(),
+				'parent_id' => $record->id,
 			'tag' => $relationName,
 			'title' => __('cms::db.'.$entity), 
 			'columns' => $c->tableFields(1),
