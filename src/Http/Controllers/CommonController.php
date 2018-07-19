@@ -127,7 +127,7 @@ abstract class CommonController extends PageController
 			$request->session()->put($key, $orders);
 		}
 		$key = $this->orderKey($table, $tag);
-		return $request->session()->get($key, [['id'=>0]]);
+		return $request->session()->get($key, ['id'=>0]);
 	}
 	
 	//filter

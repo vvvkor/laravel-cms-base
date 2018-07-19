@@ -37,6 +37,7 @@
 		@include('cms::table-filter')
 	@endif
 
+@php( $filter_values = array_pluck($filters,2,0) )
 <table class="table table-bordered -table-striped -table-hover">
 	<thead class="thead-light">
 	<tr class="bg">
@@ -49,7 +50,8 @@
 			@endcan
 			<!--input type="search" name="_q" size="5"-->
 		@foreach ($columns as $k=>$col)
-		<th><span class="{{ @array_pluck($filters,2,0)[$k] ? 'bg-warning' : '' }}">{{ $col['l'] }}</span>
+		<th>
+			<span class="{{ array_key_exists($k, $filter_values) ? 'bg-warning' : '' }}">{{ $col['l'] }}</span>
 			@php( $n = array_search($k, array_keys($orders)) )
 			@php( $n = ($n===false) ? '' : $n+1 )
 			<br>

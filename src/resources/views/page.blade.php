@@ -4,7 +4,7 @@
 
 @push('scripts')
     <!--script src="{{ asset('js/v18-all.js') }}"></script-->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
 @endpush
 
 @prepend('styles')
@@ -50,7 +50,7 @@
 			@show
 		@endif
 		
-		<main class="">
+		<main class="" id="main">
 		
 		@component('cms::alerts')
 		@endcomponent

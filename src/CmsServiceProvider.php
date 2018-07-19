@@ -43,13 +43,18 @@ class CmsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'cms');
 		$this->publishes([
 			__DIR__.'/resources/views' => resource_path('views/vendor/cms'),
-		]);
+		], 'views');
         
         // use this if your package has lang files
         $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'cms');
 		$this->publishes([
 			__DIR__.'/resources/lang' => resource_path('lang/vendor/cms'),
-		]);
+		], 'lang');
+		
+		// publish assets
+		$this->publishes([
+			__DIR__ . '/resources/assets' => resource_path('assets/vendor/cms'
+		)], 'assets');
         
         // use this if your package has routes
 		// BUT this overrides Auth routes, so Facade is used instead

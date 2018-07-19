@@ -10,7 +10,7 @@ return [
 	'sections-url' => 'URL',
 	'sections-enabled' => 'Public',
 	'sections-enabled-off' => 'Protected',
-	'sections-enabled-turn-on' => 'Piblish',
+	'sections-enabled-turn-on' => 'Publish',
 	'sections-enabled-turn-off' => 'Unpublish',
 	'sections-parent_id' => 'Parent',
 	'sections-redirect_id' => 'Redirect to',
