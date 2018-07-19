@@ -1,8 +1,6 @@
 <template>
-
-<form class="-form-inline my-2">
-
-	<div class="form-row my-1" v-for="(filter, index) in filters">
+<div>
+	<div v-for="(filter, index) in filters" class="form-row my-1">
 		<div class="col-auto">
 			<select name="field[]" class="form-control" v-model="filter[0]">
 				<option value="">-</option>
@@ -22,40 +20,42 @@
 		<div v-else class="col-auto form-check form-check-inline">
 			<input name="oper[]" type="hidden" value="=">
 			<input name="filter[]" type="hidden" v-bind:value="filter[2] ? 1 : ''">
-			<input type="checkbox" name="filter_box[]" class="form-check-input" value="1" v-model="filter[2]">
+			<input type="checkbox" name="filter_box[]" class="form-check-input mx-2" value="1" v-model="filter[2]">
 		</div>
 
-			<div v-if="index==filters.length-1" class="col-auto">
-				<input type="hidden" name="table" v-model="table">
-				<input type="hidden" name="tag" v-model="tag">
-				<button type="submit" class="btn btn-primary">Filter</button>
-				<button type="submit" class="btn btn-success" v-on:click.prevent="addFilter">Add</button>
-				<button type="submit" name="reset" value="1" class="btn btn-light">Reset</button>
-			</div>
+		<div v-if="index==filters.length-1" class="col-auto">
+			<button type="submit" class="btn btn-success" v-on:click.prevent="addEmptyFilter">+</button>
+		</div>
 	</div>
-</form>
-	
+</div>	
 </template>
 
 <script>
     export default {
 		props: {
 			columns: Object,
-			filters: Array,
+			initialFilters: Array,
 			operators: Object,
 			table: String,
 			tag: String
 		},
-		created: function(){
-			this.addFilter();
+		data: function(){
+			return {
+				filters: []
+			};
+		},
+		mounted: function(){
+            console.log('Table filter mounted!');
+			this.addInitialFilters();
+			this.addEmptyFilter();
 		},
 		methods:{
-			addFilter: function(){
+			addEmptyFilter: function(){
 				this.filters.push(['','=','']);
+			},
+			addInitialFilters: function(){
+				this.filters = this.initialFilters;
 			}
-		},
-        mounted() {
-            console.log('Table filter mounted!')
-        }
+		}
     }
 </script>
