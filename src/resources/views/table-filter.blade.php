@@ -1,12 +1,7 @@
-<br
-	v-bind:filters="{{ json_encode($filters) }}"
-	v-bind:columns='{{ json_encode($columns) }}'
->
-	
 <table-filter
 	v-bind:filters="{{ json_encode($filters) }}"
-	v-bind:columns='{{ json_encode($columns) }}'
-	v-bind:operators='{"=":"=","<>":"<>"}'
+	v-bind:columns="{{ json_encode($columns) }}"
+	v-bind:operators="{{ json_encode($operators) }}"
 	table="{{ @$table }}"
 	tag="{{ @$tag }}"
 >

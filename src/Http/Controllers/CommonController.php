@@ -37,6 +37,17 @@ abstract class CommonController extends PageController
 
 	protected $modelClass;
 	
+	private $compareOperators = [
+		'=' => '=',
+		'<>' => '<>',
+		'<' => '<',
+		'>' => '>',
+		'<=' => '<=',
+		'>=' => '>=',
+		'like' => '__cms::common.like',
+		'not like' => '__cms::common.not-like'
+	];
+	
 	public function __construct(Repo $repo, Model $model, DatabaseManager $db){
 		$this->repo = $repo;
 		$this->model = $model;
@@ -57,6 +68,7 @@ abstract class CommonController extends PageController
 				$key = 'view-'.$this->entity.($request->tag ? '-'.$request->tag : '');
 				session([$key => $request->view]);
 			}
+			foreach($this->compareOperators as $k=>$v) if(substr($v,0,2)=='__') $this->compareOperators[$k] = __(substr($v,2));
             return $next($request);
         });
 
@@ -196,6 +208,7 @@ abstract class CommonController extends PageController
 			'records' => $d,
 			'filters' => $filters,
 			'orders' => $orders,
+			'operators' => $this->compareOperators
 			] + 
 			$this->data()
 			);
