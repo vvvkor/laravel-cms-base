@@ -149,15 +149,19 @@ abstract class CommonController extends PageController
 	}
 	
 	protected function prepareFilters(Request $request, $table, $tag=''){
-		if($request->field){
+		$js = isset($request->field) ? 1 : 0;
+		$field =  $js ? $request->field  : $request->field_nojs;
+		$oper  =  $js ? $request->oper   : $request->oper_nojs;
+		$filter = $js ? $request->filter : $request->filter_nojs;
+		if($field){
 			$filters = [];
 			if(!@$request->reset){
-				foreach($request->field as $k=>$v) if($v){
-					$op = @$request->oper[$k];
+				foreach($field as $k=>$v) if($v){
+					$op = @$oper[$k];
 					$filters[] = [
 						$v,
 						$op ?: '=',
-						@$request->filter[$k]
+						@$filter[$k]
 						];
 				}
 			}
